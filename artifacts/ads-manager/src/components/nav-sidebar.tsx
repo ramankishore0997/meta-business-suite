@@ -86,8 +86,8 @@ export function NavSidebar() {
       <div className={cn("flex h-[68px] items-center gap-3 px-4", collapsed && "justify-center px-0")}>
         <Link href="/">
           <div className="flex cursor-pointer items-center gap-3">
-            <div className="glow-primary flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-primary to-indigo-500">
-              <img src="/logo.png" alt="Logo" className="h-7 w-7 object-contain" />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center">
+              <img src="/logo.png" alt="Logo" className="h-10 w-10 object-contain" />
             </div>
             {!collapsed && (
               <div className="flex flex-col leading-none">

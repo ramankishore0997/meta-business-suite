@@ -63,8 +63,8 @@ export function AccessGate({ children }: { children: ReactNode }) {
         className="glass-strong relative z-10 w-full max-w-sm rounded-2xl border border-border p-8 shadow-2xl duration-500 animate-in fade-in zoom-in-95"
       >
         <div className="flex flex-col items-center text-center">
-          <div className="glow-primary flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-indigo-500 text-primary-foreground">
-            <Lock className="h-6 w-6" strokeWidth={2.4} />
+          <div className="flex h-14 w-14 items-center justify-center">
+            <img src="/logo.png" alt="Logo" className="h-14 w-14 object-contain" />
           </div>
           <h1 className="mt-4 font-display text-xl font-bold tracking-tight text-foreground">Meta Business Suite for Developers</h1>
           <p className="mt-1 text-sm text-muted-foreground">Private workspace — enter your password to continue.</p>
