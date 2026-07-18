@@ -68,7 +68,7 @@ export function NavSidebar() {
 
   return (
     <>
-      <aside className="fixed left-0 top-[56px] z-40 flex h-[calc(100vh-56px)] w-[64px] flex-col items-center border-r border-border bg-white py-2">
+      <aside className="sidebar-surface fixed left-0 top-[56px] z-40 flex h-[calc(100vh-56px)] w-[64px] flex-col items-center border-r border-[#e4e6eb] py-2">
         <nav className="flex flex-1 flex-col items-center gap-1">
           {NAV.map((item) => {
             const active = isActive(location, item.href);
@@ -78,15 +78,17 @@ export function NavSidebar() {
                   <Link href={item.href}>
                     <div
                       className={cn(
-                        "flex h-10 w-10 items-center justify-center rounded-lg transition-colors",
-                        active ? "bg-[#e7f3ff] text-[#1877f2]" : "text-[#666] hover:bg-[#f0f2f5]"
+                        "flex h-10 w-10 items-center justify-center rounded-lg transition-all duration-150",
+                        active
+                          ? "bg-[#e7f3ff] text-[#1877f2] shadow-sm"
+                          : "text-[#65676b] hover:bg-[#f0f2f5] hover:shadow-sm"
                       )}
                     >
                       <item.icon className="h-5 w-5" strokeWidth={active ? 2.2 : 1.8} />
                     </div>
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right" className="bg-foreground text-white">{item.label}</TooltipContent>
+                <TooltipContent side="right" className="bg-[#1c1e21] text-white text-[12px] font-medium shadow-lg">{item.label}</TooltipContent>
               </Tooltip>
             );
           })}
@@ -97,41 +99,43 @@ export function NavSidebar() {
               <Link href="/settings">
                 <div
                   className={cn(
-                    "flex h-10 w-10 items-center justify-center rounded-lg transition-colors",
-                    isActive(location, "/settings") ? "bg-[#e7f3ff] text-[#1877f2]" : "text-[#666] hover:bg-[#f0f2f5]"
+                    "flex h-10 w-10 items-center justify-center rounded-lg transition-all duration-150",
+                    isActive(location, "/settings")
+                      ? "bg-[#e7f3ff] text-[#1877f2] shadow-sm"
+                      : "text-[#65676b] hover:bg-[#f0f2f5] hover:shadow-sm"
                   )}
                 >
                   <Settings className="h-5 w-5" strokeWidth={1.8} />
                 </div>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right" className="bg-foreground text-white">Settings</TooltipContent>
+            <TooltipContent side="right" className="bg-[#1c1e21] text-white text-[12px] font-medium shadow-lg">Settings</TooltipContent>
           </Tooltip>
           <Tooltip delayDuration={0}>
             <TooltipTrigger asChild>
               <button
                 onClick={() => setLogoutOpen(true)}
-                className="flex h-10 w-10 items-center justify-center rounded-lg text-[#666] transition-colors hover:bg-[#f0f2f5]"
+                className="flex h-10 w-10 items-center justify-center rounded-lg text-[#65676b] transition-all duration-150 hover:bg-[#f0f2f5] hover:shadow-sm"
               >
                 <LogOut className="h-5 w-5" strokeWidth={1.8} />
               </button>
             </TooltipTrigger>
-            <TooltipContent side="right" className="bg-foreground text-white">Logout</TooltipContent>
+            <TooltipContent side="right" className="bg-[#1c1e21] text-white text-[12px] font-medium shadow-lg">Logout</TooltipContent>
           </Tooltip>
         </div>
       </aside>
 
       <AlertDialog open={logoutOpen} onOpenChange={setLogoutOpen}>
-        <AlertDialogContent className="rounded-lg">
-          <AlertDialogHeader>
-            <AlertDialogTitle>Log out of Meta Business Suite?</AlertDialogTitle>
-            <AlertDialogDescription>
+        <AlertDialogContent className="rounded-lg border border-[#e4e6eb] bg-white p-0 shadow-xl">
+          <AlertDialogHeader className="p-6 pb-0">
+            <AlertDialogTitle className="text-[16px] font-semibold text-[#1c1e21]">Log out of Meta Business Suite?</AlertDialogTitle>
+            <AlertDialogDescription className="text-[13px] text-[#666]">
               Your workspace and client selection will be cleared on this device.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmLogout} className="bg-[#1877f2] text-white hover:bg-[#166fe5]">
+          <AlertDialogFooter className="p-6">
+            <AlertDialogCancel className="rounded-lg border-[#e4e6eb] bg-white text-[13px] font-semibold text-[#1c1e21] hover:bg-[#f0f2f5]">Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmLogout} className="btn-primary rounded-lg px-4 text-[13px] font-semibold text-white">
               Log out
             </AlertDialogAction>
           </AlertDialogFooter>

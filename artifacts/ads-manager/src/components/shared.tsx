@@ -24,7 +24,7 @@ export function PageHeader({ title, subtitle, actions }: { title: string; subtit
 
 export function GlassCard({ children, className, hover = false }: { children: ReactNode; className?: string; hover?: boolean }) {
   return (
-    <div className={cn("rounded-lg border border-[#e4e6eb] bg-white", hover && "transition-colors hover:bg-[#f0f2f5]", className)}>
+    <div className={cn("card-depth", hover && "hover-glow cursor-pointer", className)}>
       {children}
     </div>
   );
@@ -64,7 +64,7 @@ export function StatCard({ label, value, delta, icon: Icon, series, accent = "#1
 }) {
   const positive = (delta ?? 0) >= 0;
   return (
-    <div className="rounded-lg border border-[#e4e6eb] bg-white p-4">
+    <div className="card-depth hover-glow p-4">
       <div className="flex items-start justify-between">
         <div className="min-w-0">
           <p className="text-[12px] font-medium text-[#666]">{label}</p>
