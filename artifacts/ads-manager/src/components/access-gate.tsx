@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { ACCESS_PASSWORD, ACCESS_KEY } from "@/lib/access";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Lock, Eye, EyeOff, ShieldCheck, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, ShieldCheck, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 function isAuthed(): boolean {
@@ -57,17 +57,17 @@ export function AccessGate({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="app-aurora relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#f0f2f5] px-4">
       <form
         onSubmit={submit}
-        className="glass-strong relative z-10 w-full max-w-sm rounded-2xl border border-border p-8 shadow-2xl duration-500 animate-in fade-in zoom-in-95"
+        className="w-full max-w-sm rounded-lg border border-[#e4e6eb] bg-white p-8 shadow-sm"
       >
         <div className="flex flex-col items-center text-center">
           <div className="flex h-14 w-14 items-center justify-center">
             <img src="/logo.png" alt="Logo" className="h-14 w-14 object-contain" />
           </div>
-          <h1 className="mt-4 font-display text-xl font-bold tracking-tight text-foreground">Meta Business Suite for Developers</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Private workspace — enter your password to continue.</p>
+          <h1 className="mt-4 text-[18px] font-semibold text-[#1c1e21]">Meta Business Suite for Developers</h1>
+          <p className="mt-1 text-[13px] text-[#666]">Private workspace — enter your password to continue.</p>
         </div>
 
         <div className="mt-6 space-y-3">
@@ -82,12 +82,12 @@ export function AccessGate({ children }: { children: ReactNode }) {
                 setError(false);
               }}
               placeholder="Password"
-              className={cn("h-11 pr-10", error && "border-destructive focus-visible:ring-destructive")}
+              className={cn("h-10 rounded-lg border-[#e4e6eb] pr-10 text-[13px]", error && "border-[#d32f2f] focus-visible:ring-[#d32f2f]")}
             />
             <button
               type="button"
               onClick={() => setShow((s) => !s)}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#666] transition-colors hover:text-[#1c1e21]"
               title={show ? "Hide" : "Show"}
               tabIndex={-1}
             >
@@ -96,22 +96,22 @@ export function AccessGate({ children }: { children: ReactNode }) {
           </div>
 
           {error && !locked && (
-            <p className="flex items-center gap-1.5 text-xs font-medium text-destructive">
+            <p className="flex items-center gap-1.5 text-[12px] font-medium text-[#d32f2f]">
               <AlertCircle className="h-3.5 w-3.5" /> Wrong password. Try again.
             </p>
           )}
           {locked && (
-            <p className="flex items-center gap-1.5 text-xs font-medium text-warning">
+            <p className="flex items-center gap-1.5 text-[12px] font-medium text-[#f57f17]">
               <AlertCircle className="h-3.5 w-3.5" /> Too many attempts. Wait 30 seconds.
             </p>
           )}
 
-          <Button type="submit" disabled={locked} className="h-11 w-full rounded-xl font-semibold shadow-lg shadow-primary/25">
+          <Button type="submit" disabled={locked} className="h-10 w-full rounded-lg bg-[#1877f2] font-semibold text-white hover:bg-[#166fe5]">
             Unlock
           </Button>
         </div>
 
-        <div className="mt-6 flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground">
+        <div className="mt-6 flex items-center justify-center gap-1.5 text-[11px] text-[#666]">
           <ShieldCheck className="h-3.5 w-3.5" /> Authorized access only
         </div>
       </form>

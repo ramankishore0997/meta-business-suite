@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "wouter";
 import { Layout } from "@/components/layout";
-import { PageContainer, GlassCard } from "@/components/shared";
+import { PageContainer } from "@/components/shared";
 import { MetaConnectionBadge } from "@/components/meta-connection";
 import { DeliveryPill } from "@/components/delivery-pill";
 import {
@@ -119,18 +119,17 @@ export default function PortalPage() {
       <style>{`@media print {
         aside, header { display: none !important; }
         .no-print { display: none !important; }
-        .app-aurora::before, .app-aurora::after { display: none !important; }
         body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       }`}</style>
       <PageContainer>
         {/* Controls (not printed) */}
         <div className="no-print mb-4 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Viewing as</span>
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#666]">Viewing as</span>
             <select
               value={activeClientId}
               onChange={(e) => setActiveClientId(e.target.value)}
-              className="h-9 rounded-lg border border-input bg-background px-3 text-sm font-semibold"
+              className="h-9 rounded-lg border border-[#e4e6eb] bg-white px-3 text-sm font-semibold"
             >
               <option value="all">All Clients</option>
               {clients.map((c) => (
@@ -138,30 +137,30 @@ export default function PortalPage() {
               ))}
             </select>
           </div>
-          <Button onClick={() => window.print()} className="h-9 gap-2 rounded-xl font-semibold">
+          <Button onClick={() => window.print()} className="h-9 gap-2 rounded-lg font-semibold">
             <Printer className="h-4 w-4" /> Export report (PDF)
           </Button>
         </div>
 
         {/* White-label report header */}
-        <GlassCard className="overflow-hidden p-0">
-          <div className="flex flex-col gap-4 border-b border-border/60 p-6 md:flex-row md:items-center md:justify-between">
+        <div className="overflow-hidden rounded-lg border border-[#e4e6eb] bg-white p-0">
+          <div className="flex flex-col gap-4 border-b border-[#e4e6eb]/60 p-6 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-4">
               <div
-                className="flex h-14 w-14 items-center justify-center rounded-2xl text-xl font-bold text-white shadow-lg"
+                className="flex h-14 w-14 items-center justify-center rounded-lg text-xl font-bold text-white"
                 style={{ background: `linear-gradient(135deg, ${selectedClient?.logoColor ?? "#3B82F6"}, #6366F1)` }}
               >
                 {(settings.agencyName || "N").charAt(0).toUpperCase()}
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="font-display text-xl font-bold text-foreground">{settings.agencyName}</h1>
-                  <span className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary">
+                  <h1 className="text-xl font-bold text-[#1c1e21]">{settings.agencyName}</h1>
+                  <span className="inline-flex items-center gap-1 rounded-full border border-[#1877f2]/30 bg-[#e7f3ff] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#1877f2]">
                     <ShieldCheck className="h-3 w-3" /> Meta Partner
                   </span>
                 </div>
-                <p className="mt-0.5 text-sm text-muted-foreground">
-                  Performance report for <span className="font-semibold text-foreground">{clientName}</span> · {reportPeriod}
+                <p className="mt-0.5 text-sm text-[#666]">
+                  Performance report for <span className="font-semibold text-[#1c1e21]">{clientName}</span> · {reportPeriod}
                 </p>
               </div>
             </div>
@@ -169,7 +168,7 @@ export default function PortalPage() {
           </div>
 
           {/* Summary */}
-          <div className="grid grid-cols-2 gap-px bg-border/60 md:grid-cols-3 xl:grid-cols-6">
+          <div className="grid grid-cols-2 gap-px bg-[#e4e6eb]/60 md:grid-cols-3 xl:grid-cols-6">
             <Summary label="Ad Spend" value={formatCurrency(totals.spend)} />
             <Summary label="Leads" value={formatNumber(totals.leads)} />
             <Summary label="Revenue" value={formatCurrency(totals.revenue)} />
@@ -177,11 +176,11 @@ export default function PortalPage() {
             <Summary label="Results" value={formatNumber(totals.results)} />
             <Summary label="Active Campaigns" value={String(totals.activeCount)} />
           </div>
-        </GlassCard>
+        </div>
 
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {/* Goals vs Actual */}
-          <GlassCard className="p-5">
+          <div className="rounded-lg border border-[#e4e6eb] bg-white p-5">
             <SectionTitle icon={Target} title="Goals vs Actual" hint="Progress toward this month's targets" />
             <div className="mt-4 space-y-4">
               {goals.map((g) => {
@@ -195,19 +194,19 @@ export default function PortalPage() {
                 return (
                   <div key={g.id}>
                     <div className="mb-1.5 flex items-baseline justify-between text-sm">
-                      <span className="font-medium text-foreground">{g.label}</span>
-                      <span className="text-muted-foreground">
-                        <span className="font-semibold text-foreground">{fmt(actual)}</span> / {fmt(g.target)}
+                      <span className="font-medium text-[#1c1e21]">{g.label}</span>
+                      <span className="text-[#666]">
+                        <span className="font-semibold text-[#1c1e21]">{fmt(actual)}</span> / {fmt(g.target)}
                       </span>
                     </div>
-                    <div className="relative h-2.5 overflow-hidden rounded-full bg-muted">
+                    <div className="relative h-2.5 overflow-hidden rounded-full bg-[#f0f2f5]">
                       <div
-                        className={`h-full rounded-full transition-all duration-700 ${done ? "bg-emerald-500" : "bg-primary"}`}
+                        className={`h-full rounded-full transition-all duration-700 ${done ? "bg-emerald-500" : "bg-[#1877f2]"}`}
                         style={{ width: `${pct}%` }}
                       />
                     </div>
                     <div className="mt-1 flex items-center justify-between text-[11px]">
-                      <span className={done ? "font-semibold text-emerald-400" : "text-muted-foreground"}>
+                      <span className={done ? "font-semibold text-emerald-400" : "text-[#666]"}>
                         {done ? "Goal reached" : `${pct}% complete`}
                       </span>
                     </div>
@@ -215,12 +214,12 @@ export default function PortalPage() {
                 );
               })}
             </div>
-          </GlassCard>
+          </div>
 
           {/* Transparent spend breakdown */}
-          <GlassCard className="p-5">
+          <div className="rounded-lg border border-[#e4e6eb] bg-white p-5">
             <SectionTitle icon={ShieldCheck} title="Transparent Spend Breakdown" hint="Exactly where your budget goes" />
-            <div className="mt-3 flex items-center gap-2 rounded-xl border border-emerald-500/25 bg-emerald-500/10 px-3 py-2.5 text-xs text-emerald-400">
+            <div className="mt-3 flex items-center gap-2 rounded-lg border border-emerald-500/25 bg-emerald-500/10 px-3 py-2.5 text-xs text-emerald-400">
               <Check className="h-4 w-4 shrink-0" />
               <span>100% of your ad budget is paid directly to Meta. No hidden markup on spend.</span>
             </div>
@@ -228,46 +227,46 @@ export default function PortalPage() {
               {topSpend.map((c) => (
                 <div key={c.id}>
                   <div className="mb-1 flex items-center justify-between text-sm">
-                    <span className="truncate pr-2 font-medium text-foreground">{c.name}</span>
-                    <span className="shrink-0 font-semibold text-foreground">{formatCurrency(c.amountSpent)}</span>
+                    <span className="truncate pr-2 font-medium text-[#1c1e21]">{c.name}</span>
+                    <span className="shrink-0 font-semibold text-[#1c1e21]">{formatCurrency(c.amountSpent)}</span>
                   </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-muted">
-                    <div className="h-full rounded-full bg-primary/80 transition-all duration-700" style={{ width: `${(c.amountSpent / maxSpend) * 100}%` }} />
+                  <div className="h-2 overflow-hidden rounded-full bg-[#f0f2f5]">
+                    <div className="h-full rounded-full bg-[#1877f2]/80 transition-all duration-700" style={{ width: `${(c.amountSpent / maxSpend) * 100}%` }} />
                   </div>
                 </div>
               ))}
-              {topSpend.length === 0 && <p className="text-sm text-muted-foreground">No spend recorded yet.</p>}
+              {topSpend.length === 0 && <p className="text-sm text-[#666]">No spend recorded yet.</p>}
             </div>
-            <div className="mt-4 space-y-1.5 border-t border-border/60 pt-4 text-sm">
+            <div className="mt-4 space-y-1.5 border-t border-[#e4e6eb]/60 pt-4 text-sm">
               <Row label="Ad spend (paid to Meta)" value={formatCurrency(totals.spend)} />
               <Row label="Agency management (15%, per contract)" value={formatCurrency(managementFee)} muted />
               <Row label="Total client investment" value={formatCurrency(totals.spend + managementFee)} bold />
             </div>
-          </GlassCard>
+          </div>
         </div>
 
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {/* Optimization log */}
-          <GlassCard className="p-5">
+          <div className="rounded-lg border border-[#e4e6eb] bg-white p-5">
             <SectionTitle icon={Wrench} title="What We Did For You" hint="Recent proactive optimizations" />
             <div className="mt-4 space-y-3">
               {optimizations.slice(0, 6).map((o) => (
-                <div key={o.id} className="flex items-start gap-3 rounded-xl border border-border/60 bg-card/40 p-3">
+                <div key={o.id} className="flex items-start gap-3 rounded-lg border border-[#e4e6eb]/60 bg-white p-3">
                   <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/12 text-emerald-400">
                     <TrendingUp className="h-4 w-4" />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium leading-snug text-foreground">{o.action}</p>
-                    <p className="mt-0.5 text-[11px] text-muted-foreground">{o.date} · {o.by}</p>
+                    <p className="text-sm font-medium leading-snug text-[#1c1e21]">{o.action}</p>
+                    <p className="mt-0.5 text-[11px] text-[#666]">{o.date} · {o.by}</p>
                   </div>
                   <span className="shrink-0 rounded-full bg-emerald-500/12 px-2 py-1 text-[11px] font-bold text-emerald-400">{o.impact}</span>
                 </div>
               ))}
             </div>
-          </GlassCard>
+          </div>
 
           {/* Creative highlights */}
-          <GlassCard className="p-5">
+          <div className="rounded-lg border border-[#e4e6eb] bg-white p-5">
             <div className="flex items-center justify-between">
               <SectionTitle icon={Sparkles} title="Creative Highlights" hint="Live ads running in your account" />
               <Link href="/creatives" className="no-print">
@@ -277,11 +276,11 @@ export default function PortalPage() {
               </Link>
             </div>
             {highlightCreatives.length === 0 ? (
-              <p className="mt-4 text-sm text-muted-foreground">No creatives added yet.</p>
+              <p className="mt-4 text-sm text-[#666]">No creatives added yet.</p>
             ) : (
               <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {highlightCreatives.map((c) => (
-                  <div key={c.id} className="relative aspect-square overflow-hidden rounded-xl border border-border bg-muted/40">
+                  <div key={c.id} className="relative aspect-square overflow-hidden rounded-lg border border-[#e4e6eb] bg-[#f0f2f5]">
                     {c.kind === "video" ? (
                       <>
                         <video src={mediaSrc(c.url)} muted playsInline preload="metadata" className="h-full w-full object-cover" />
@@ -298,11 +297,11 @@ export default function PortalPage() {
                 ))}
               </div>
             )}
-          </GlassCard>
+          </div>
         </div>
 
         {/* Campaign performance */}
-        <GlassCard className="mt-4 p-5">
+        <div className="mt-4 rounded-lg border border-[#e4e6eb] bg-white p-5">
           <SectionTitle icon={TrendingUp} title="Campaign Performance" hint={`${scoped.length} campaign${scoped.length === 1 ? "" : "s"} in this report`} />
           <div className="mt-4 space-y-2">
             {scoped.slice(0, 10).map((c) => {
@@ -311,36 +310,36 @@ export default function PortalPage() {
               const hs = healthScore(c);
               const tone = scoreTone(hs);
               return (
-                <div key={c.id} className="flex items-center gap-4 rounded-xl border border-border/60 bg-card/40 px-4 py-3">
+                <div key={c.id} className="flex items-center gap-4 rounded-lg border border-[#e4e6eb]/60 bg-white px-4 py-3">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="truncate text-sm font-semibold text-foreground">{c.name}</span>
+                      <span className="truncate text-sm font-semibold text-[#1c1e21]">{c.name}</span>
                       <DeliveryPill status={c.delivery} />
                     </div>
-                    <p className="mt-0.5 text-[11px] text-muted-foreground">{formatNumber(ex.leads)} leads · {formatNumber(c.results)} results</p>
+                    <p className="mt-0.5 text-[11px] text-[#666]">{formatNumber(ex.leads)} leads · {formatNumber(c.results)} results</p>
                   </div>
                   <div className="hidden text-right sm:block">
-                    <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Spend</p>
-                    <p className="text-sm font-semibold text-foreground">{formatCurrency(c.amountSpent)}</p>
+                    <p className="text-[11px] uppercase tracking-wider text-[#666]">Spend</p>
+                    <p className="text-sm font-semibold text-[#1c1e21]">{formatCurrency(c.amountSpent)}</p>
                   </div>
                   <div className="hidden text-right sm:block">
-                    <p className="text-[11px] uppercase tracking-wider text-muted-foreground">ROAS</p>
-                    <p className="text-sm font-semibold text-foreground">{rv.toFixed(2)}x</p>
+                    <p className="text-[11px] uppercase tracking-wider text-[#666]">ROAS</p>
+                    <p className="text-sm font-semibold text-[#1c1e21]">{rv.toFixed(2)}x</p>
                   </div>
                   <div className="w-14 text-right">
                     <p className={`text-lg font-bold ${TONE[tone]}`}>{hs}</p>
-                    <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-muted">
+                    <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-[#f0f2f5]">
                       <div className={`h-full rounded-full ${BAR[tone]}`} style={{ width: `${hs}%` }} />
                     </div>
                   </div>
                 </div>
               );
             })}
-            {scoped.length === 0 && <p className="text-sm text-muted-foreground">No campaigns for this client yet.</p>}
+            {scoped.length === 0 && <p className="text-sm text-[#666]">No campaigns for this client yet.</p>}
           </div>
-        </GlassCard>
+        </div>
 
-        <p className="mt-6 text-center text-[11px] text-muted-foreground">
+        <p className="mt-6 text-center text-[11px] text-[#666]">
           Prepared by {settings.agencyName} · Data synced live from Meta Business · {reportPeriod}
         </p>
       </PageContainer>
@@ -350,9 +349,9 @@ export default function PortalPage() {
 
 function Summary({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
   return (
-    <div className="bg-card/60 p-4">
-      <p className="text-[11px] uppercase tracking-wider text-muted-foreground">{label}</p>
-      <p className={`mt-1 font-display text-xl font-bold ${accent ? "text-primary" : "text-foreground"}`}>{value}</p>
+    <div className="bg-white p-4">
+      <p className="text-[11px] uppercase tracking-wider text-[#666]">{label}</p>
+      <p className={`mt-1 text-xl font-bold ${accent ? "text-[#1877f2]" : "text-[#1c1e21]"}`}>{value}</p>
     </div>
   );
 }
@@ -360,12 +359,12 @@ function Summary({ label, value, accent }: { label: string; value: string; accen
 function SectionTitle({ icon: Icon, title, hint }: { icon: typeof Target; title: string; hint?: string }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#e7f3ff] text-[#1877f2]">
         <Icon className="h-[18px] w-[18px]" />
       </span>
       <div>
-        <h2 className="font-display text-base font-bold text-foreground">{title}</h2>
-        {hint && <p className="text-[11px] text-muted-foreground">{hint}</p>}
+        <h2 className="text-base font-bold text-[#1c1e21]">{title}</h2>
+        {hint && <p className="text-[11px] text-[#666]">{hint}</p>}
       </div>
     </div>
   );
@@ -374,8 +373,8 @@ function SectionTitle({ icon: Icon, title, hint }: { icon: typeof Target; title:
 function Row({ label, value, muted, bold }: { label: string; value: string; muted?: boolean; bold?: boolean }) {
   return (
     <div className="flex items-center justify-between">
-      <span className={muted ? "text-muted-foreground" : bold ? "font-semibold text-foreground" : "text-foreground"}>{label}</span>
-      <span className={bold ? "font-bold text-foreground" : muted ? "text-muted-foreground" : "font-semibold text-foreground"}>{value}</span>
+      <span className={muted ? "text-[#666]" : bold ? "font-semibold text-[#1c1e21]" : "text-[#1c1e21]"}>{label}</span>
+      <span className={bold ? "font-bold text-[#1c1e21]" : muted ? "text-[#666]" : "font-semibold text-[#1c1e21]"}>{value}</span>
     </div>
   );
 }

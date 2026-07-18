@@ -7,44 +7,34 @@ interface DeliveryPillProps {
   className?: string;
 }
 
-/**
- * Meta-style delivery badge. Maps the five backend delivery states onto
- * Meta Ads Manager's visual language (gradient pill + glowing status dot).
- * Purely presentational — no state that can't occur is invented.
- */
 const META: Record<
   DeliveryStatus,
-  { label: string; pill: string; dot: string; glow: string }
+  { label: string; pill: string; dot: string }
 > = {
   active: {
-    label: "Delivering",
-    pill: "bg-gradient-to-r from-emerald-500/20 to-emerald-500/5 text-emerald-400 border-emerald-500/30",
-    dot: "bg-emerald-400",
-    glow: "shadow-[0_0_8px_rgba(16,185,129,0.7)]",
+    label: "Active",
+    pill: "bg-[#e7f7e3] text-[#2e7d32]",
+    dot: "bg-[#42b72a]",
   },
   learning: {
     label: "Learning",
-    pill: "bg-gradient-to-r from-amber-400/20 to-amber-400/5 text-amber-300 border-amber-400/30",
-    dot: "bg-amber-300",
-    glow: "shadow-[0_0_8px_rgba(251,191,36,0.7)]",
+    pill: "bg-[#fff8e1] text-[#f57f17]",
+    dot: "bg-[#f5a623]",
   },
   not_delivering: {
     label: "Learning Limited",
-    pill: "bg-gradient-to-r from-orange-500/20 to-orange-500/5 text-orange-300 border-orange-500/30",
-    dot: "bg-orange-400",
-    glow: "shadow-[0_0_8px_rgba(249,115,22,0.6)]",
+    pill: "bg-[#fff3e0] text-[#e65100]",
+    dot: "bg-[#f4511e]",
   },
   error: {
     label: "Error",
-    pill: "bg-gradient-to-r from-red-500/20 to-red-500/5 text-red-400 border-red-500/30",
-    dot: "bg-red-500",
-    glow: "shadow-[0_0_8px_rgba(239,68,68,0.7)]",
+    pill: "bg-red-50 text-[#d32f2f]",
+    dot: "bg-[#d32f2f]",
   },
   off: {
     label: "Paused",
-    pill: "bg-gradient-to-r from-slate-500/15 to-slate-500/5 text-slate-300 border-slate-400/20",
-    dot: "bg-slate-400",
-    glow: "",
+    pill: "bg-[#f0f2f5] text-[#666]",
+    dot: "bg-[#ccc]",
   },
 };
 
@@ -53,7 +43,7 @@ export function DeliveryPill({ status, className }: DeliveryPillProps) {
   return (
     <div
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider backdrop-blur-sm",
+        "inline-flex items-center gap-1.5 rounded px-2 py-0.5 text-[11px] font-medium",
         m.pill,
         className,
       )}
@@ -62,7 +52,7 @@ export function DeliveryPill({ status, className }: DeliveryPillProps) {
         {status === "active" && (
           <span className={cn("absolute inline-flex h-full w-full animate-ping rounded-full opacity-60", m.dot)} />
         )}
-        <span className={cn("relative inline-flex h-1.5 w-1.5 rounded-full", m.dot, m.glow)} />
+        <span className={cn("relative inline-flex h-1.5 w-1.5 rounded-full", m.dot)} />
       </span>
       {m.label}
     </div>

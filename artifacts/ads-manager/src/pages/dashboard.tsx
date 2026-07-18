@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Layout } from "@/components/layout";
-import { PageContainer, GlassCard } from "@/components/shared";
+import { PageContainer } from "@/components/shared";
 import {
   useGetInsightsSummary,
   getGetInsightsSummaryQueryKey,
@@ -143,25 +143,23 @@ export default function DashboardPage() {
     <Layout>
       <PageContainer>
         {/* HERO */}
-        <GlassCard className="relative overflow-hidden p-6 sm:p-8">
-          <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-28 left-1/3 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl" />
+        <div className="rounded-lg border border-[#e4e6eb] bg-white p-5 sm:p-8">
           <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#e7f3ff] text-[#1877f2]">
                   <Sparkles className="h-4 w-4" />
                 </span>
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary/90">
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#1877f2]">
                   Meta Ads Operating System
                 </span>
               </div>
-              <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              <h1 className="mt-3 text-3xl font-bold tracking-tight text-[#050505] sm:text-4xl">
                 Welcome back, {firstName}
               </h1>
-              <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                <span className="font-medium text-foreground/80">{settings.agencyName}</span>
-                <span className="inline-flex items-center gap-1 rounded-full border border-primary/25 bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
+              <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-[#65676b]">
+                <span className="font-medium text-[#050505]">{settings.agencyName}</span>
+                <span className="inline-flex items-center gap-1 rounded-full border border-[#b3d4ff] bg-[#e7f3ff] px-2 py-0.5 text-[11px] font-semibold text-[#1877f2]">
                   <BadgeCheck className="h-3.5 w-3.5" />
                   Meta Ads Partner
                 </span>
@@ -176,20 +174,20 @@ export default function DashboardPage() {
               <HeroStat label="ROAS" value={roas} kind="roas" icon={<TrendingUp className="h-3.5 w-3.5" />} accent />
             </div>
           </div>
-        </GlassCard>
+        </div>
 
         {/* AI INSIGHTS */}
         <div className="mt-5">
           <div className="mb-3 flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/15 text-primary">
+            <span className="flex h-6 w-6 items-center justify-center rounded-md bg-[#e7f3ff] text-[#1877f2]">
               <Sparkles className="h-3.5 w-3.5" />
             </span>
-            <h2 className="font-display text-base font-semibold">AI Insights</h2>
+            <h2 className="text-base font-semibold text-[#050505]">AI Insights</h2>
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#1877f2] opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#1877f2]" />
             </span>
-            <span className="text-xs text-muted-foreground">Updated live from your campaigns</span>
+            <span className="text-xs text-[#65676b]">Updated live from your campaigns</span>
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {insights.map((ins, i) => (
@@ -200,15 +198,15 @@ export default function DashboardPage() {
 
         {/* CHARTS */}
         <div className="mt-5 grid grid-cols-1 gap-4 xl:grid-cols-3">
-          <GlassCard className="p-5 xl:col-span-2">
+          <div className="rounded-lg border border-[#e4e6eb] bg-white p-5 xl:col-span-2">
             <div className="mb-4 flex items-center justify-between">
               <div>
-                <h3 className="font-display text-base font-semibold">Performance Trend</h3>
-                <p className="text-xs text-muted-foreground">Spend vs results over the period</p>
+                <h3 className="text-base font-semibold text-[#050505]">Performance Trend</h3>
+                <p className="text-xs text-[#65676b]">Spend vs results over the period</p>
               </div>
               <div className="flex items-center gap-4 text-xs">
-                <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-primary" /> Spend</span>
-                <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-success" /> Results</span>
+                <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-[#1877f2]" /> Spend</span>
+                <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-[#42b72a]" /> Results</span>
               </div>
             </div>
             <div className="h-[280px]">
@@ -216,31 +214,31 @@ export default function DashboardPage() {
                 <AreaChart data={trendData} margin={{ top: 6, right: 6, bottom: 0, left: -18 }}>
                   <defs>
                     <linearGradient id="dSpend" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                      <stop offset="5%" stopColor="#1877f2" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#1877f2" stopOpacity={0} />
                     </linearGradient>
                     <linearGradient id="dRes" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--success))" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="hsl(var(--success))" stopOpacity={0} />
+                      <stop offset="5%" stopColor="#42b72a" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#42b72a" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                  <XAxis dataKey="day" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
-                  <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid hsl(var(--border))", background: "hsl(var(--popover))", boxShadow: "0 10px 40px -12px rgba(0,0,0,0.5)" }} />
-                  <Area type="monotone" dataKey="spend" stroke="hsl(var(--primary))" strokeWidth={2.5} fill="url(#dSpend)" />
-                  <Area type="monotone" dataKey="results" stroke="hsl(var(--success))" strokeWidth={2.5} fill="url(#dRes)" />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e4e6eb" />
+                  <XAxis dataKey="day" tick={{ fontSize: 11, fill: "#65676b" }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 11, fill: "#65676b" }} axisLine={false} tickLine={false} />
+                  <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid #e4e6eb", background: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }} />
+                  <Area type="monotone" dataKey="spend" stroke="#1877f2" strokeWidth={2.5} fill="url(#dSpend)" />
+                  <Area type="monotone" dataKey="results" stroke="#42b72a" strokeWidth={2.5} fill="url(#dRes)" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
-          </GlassCard>
+          </div>
 
-          <GlassCard className="p-5">
-            <h3 className="font-display text-base font-semibold">Spend by Objective</h3>
-            <p className="text-xs text-muted-foreground">Where the budget is going</p>
+          <div className="rounded-lg border border-[#e4e6eb] bg-white p-5">
+            <h3 className="text-base font-semibold text-[#050505]">Spend by Objective</h3>
+            <p className="text-xs text-[#65676b]">Where the budget is going</p>
             <div className="mt-2 h-[200px]">
               {objectiveData.length === 0 ? (
-                <div className="flex h-full items-center justify-center text-sm text-muted-foreground">No spend yet</div>
+                <div className="flex h-full items-center justify-center text-sm text-[#65676b]">No spend yet</div>
               ) : (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -249,7 +247,7 @@ export default function DashboardPage() {
                         <Cell key={d.name} fill={OBJECTIVE_COLORS[d.name] ?? "#3B82F6"} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(v: number) => formatCurrency(v)} contentStyle={{ borderRadius: 12, border: "1px solid hsl(var(--border))", background: "hsl(var(--popover))" }} />
+                    <Tooltip formatter={(v: number) => formatCurrency(v)} contentStyle={{ borderRadius: 12, border: "1px solid #e4e6eb", background: "#fff" }} />
                   </PieChart>
                 </ResponsiveContainer>
               )}
@@ -257,27 +255,27 @@ export default function DashboardPage() {
             <div className="mt-1 space-y-1.5">
               {objectiveData.slice(0, 4).map((d) => (
                 <div key={d.name} className="flex items-center justify-between text-xs">
-                  <span className="flex items-center gap-2 text-muted-foreground">
+                  <span className="flex items-center gap-2 text-[#65676b]">
                     <span className="h-2 w-2 rounded-full" style={{ background: OBJECTIVE_COLORS[d.name] ?? "#3B82F6" }} />
                     {d.name.replace("_", " ")}
                   </span>
-                  <span className="font-mono font-semibold">{formatCurrency(d.value)}</span>
+                  <span className="font-mono font-semibold text-[#050505]">{formatCurrency(d.value)}</span>
                 </div>
               ))}
             </div>
-          </GlassCard>
+          </div>
         </div>
 
         {/* CAMPAIGN HEALTH + ACTIVITY */}
         <div className="mt-5 grid grid-cols-1 gap-4 xl:grid-cols-3">
-          <GlassCard className="p-5 xl:col-span-2">
+          <div className="rounded-lg border border-[#e4e6eb] bg-white p-5 xl:col-span-2">
             <div className="mb-3 flex items-center justify-between">
               <div>
-                <h3 className="font-display text-base font-semibold">Campaign Health</h3>
-                <p className="text-xs text-muted-foreground">Delivery quality across your top campaigns</p>
+                <h3 className="text-base font-semibold text-[#050505]">Campaign Health</h3>
+                <p className="text-xs text-[#65676b]">Delivery quality across your top campaigns</p>
               </div>
               <Link href="/campaigns">
-                <span className="flex cursor-pointer items-center gap-1 text-xs font-semibold text-primary hover:underline">
+                <span className="flex cursor-pointer items-center gap-1 text-xs font-semibold text-[#1877f2] hover:underline">
                   View all <ArrowUpRight className="h-3 w-3" />
                 </span>
               </Link>
@@ -288,51 +286,51 @@ export default function DashboardPage() {
               ) : (
                 topCampaigns.map(({ c, ex, rv, health }) => (
                   <Link key={c.id} href="/campaigns">
-                    <div className="group flex cursor-pointer items-center gap-4 rounded-xl border border-border/60 bg-card/40 p-3 transition-all hover:border-primary/40 hover:bg-muted/30">
+                    <div className="group flex cursor-pointer items-center gap-4 rounded-lg border border-[#e4e6eb] bg-[#f0f2f5] p-3 transition-all hover:bg-white hover:border-[#1877f2]/40">
                       <HealthRing score={health} />
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="truncate text-sm font-semibold text-foreground group-hover:text-primary">{c.name}</span>
+                          <span className="truncate text-sm font-semibold text-[#050505] group-hover:text-[#1877f2]">{c.name}</span>
                           <DeliveryPill status={c.delivery} />
                         </div>
-                        <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-0.5 text-[11px] text-muted-foreground">
-                          <span>Spend <span className="font-mono font-semibold text-foreground/80">{formatCurrency(c.amountSpent)}</span></span>
-                          <span>ROAS <span className="font-mono font-semibold text-foreground/80">{rv.toFixed(2)}x</span></span>
-                          <span>Results <span className="font-mono font-semibold text-foreground/80">{formatNumber(c.results)}</span></span>
-                          <span>Leads <span className="font-mono font-semibold text-foreground/80">{formatNumber(ex.leads)}</span></span>
+                        <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-0.5 text-[11px] text-[#65676b]">
+                          <span>Spend <span className="font-mono font-semibold text-[#050505]">{formatCurrency(c.amountSpent)}</span></span>
+                          <span>ROAS <span className="font-mono font-semibold text-[#050505]">{rv.toFixed(2)}x</span></span>
+                          <span>Results <span className="font-mono font-semibold text-[#050505]">{formatNumber(c.results)}</span></span>
+                          <span>Leads <span className="font-mono font-semibold text-[#050505]">{formatNumber(ex.leads)}</span></span>
                         </div>
                       </div>
-                      <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+                      <ArrowUpRight className="h-4 w-4 shrink-0 text-[#65676b] opacity-0 transition-opacity group-hover:opacity-100" />
                     </div>
                   </Link>
                 ))
               )}
             </div>
-          </GlassCard>
+          </div>
 
-          <GlassCard className="p-5">
-            <h3 className="font-display text-base font-semibold">Activity Timeline</h3>
-            <p className="text-xs text-muted-foreground">Latest across your workspace</p>
+          <div className="rounded-lg border border-[#e4e6eb] bg-white p-5">
+            <h3 className="text-base font-semibold text-[#050505]">Activity Timeline</h3>
+            <p className="text-xs text-[#65676b]">Latest across your workspace</p>
             <div className="relative mt-4 space-y-0 pl-5">
-              <div className="absolute bottom-2 left-[5px] top-2 w-px bg-border" />
+              <div className="absolute bottom-2 left-[5px] top-2 w-px bg-[#e4e6eb]" />
               {activity.map((a, i) => (
                 <div key={i} className="relative py-2.5 duration-500 animate-in fade-in slide-in-from-left-2 fill-mode-both" style={{ animationDelay: `${i * 60}ms` }}>
-                  <div className="absolute -left-[18px] top-3.5 h-2.5 w-2.5 rounded-full border-2 border-primary bg-card" />
-                  <div className="text-sm font-medium text-foreground">{a.text}</div>
-                  <div className="text-[11px] text-muted-foreground">{a.when} · {a.actor}</div>
+                  <div className="absolute -left-[18px] top-3.5 h-2.5 w-2.5 rounded-full border-2 border-[#1877f2] bg-white" />
+                  <div className="text-sm font-medium text-[#050505]">{a.text}</div>
+                  <div className="text-[11px] text-[#65676b]">{a.when} · {a.actor}</div>
                 </div>
               ))}
             </div>
-          </GlassCard>
+          </div>
         </div>
 
         {/* CLIENT PORTAL SUMMARY */}
         <div className="mt-5 grid grid-cols-1 gap-4 xl:grid-cols-3">
-          <GlassCard className="p-5 xl:col-span-2">
+          <div className="rounded-lg border border-[#e4e6eb] bg-white p-5 xl:col-span-2">
             <div className="mb-4 flex items-center justify-between">
               <div>
-                <h3 className="font-display text-base font-semibold">Client Portal Summary</h3>
-                <p className="text-xs text-muted-foreground">This month vs last month</p>
+                <h3 className="text-base font-semibold text-[#050505]">Client Portal Summary</h3>
+                <p className="text-xs text-[#65676b]">This month vs last month</p>
               </div>
               <span className={cnGrowth(growth)}>
                 {growth >= 0 ? <TrendingUp className="h-3.5 w-3.5" /> : <TrendingDown className="h-3.5 w-3.5" />}
@@ -345,13 +343,13 @@ export default function DashboardPage() {
               <PortalStat label="Leads" value={formatNumber(totals.leads)} sub={`ROAS ${roas.toFixed(2)}x`} />
               <PortalStat label="Active" value={`${activeCampaigns}`} sub={`${campaigns.length} total`} />
             </div>
-          </GlassCard>
+          </div>
 
-          <GlassCard className="p-5">
+          <div className="rounded-lg border border-[#e4e6eb] bg-white p-5">
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="font-display text-base font-semibold">Top Clients</h3>
+              <h3 className="text-base font-semibold text-[#050505]">Top Clients</h3>
               <Link href="/clients">
-                <span className="flex cursor-pointer items-center gap-1 text-xs font-semibold text-primary hover:underline">
+                <span className="flex cursor-pointer items-center gap-1 text-xs font-semibold text-[#1877f2] hover:underline">
                   View all <ArrowUpRight className="h-3 w-3" />
                 </span>
               </Link>
@@ -362,19 +360,19 @@ export default function DashboardPage() {
                 .sort((a, b) => b.monthlyBudget - a.monthlyBudget)
                 .slice(0, 4)
                 .map((c) => (
-                  <div key={c.id} className="flex items-center gap-3 rounded-xl px-2 py-2">
+                  <div key={c.id} className="flex items-center gap-3 rounded-lg px-2 py-2">
                     <div className="flex h-9 w-9 items-center justify-center rounded-lg text-sm font-bold text-white" style={{ backgroundColor: c.logoColor }}>
                       {c.company.charAt(0)}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium">{c.company}</p>
-                      <p className="text-[11px] capitalize text-muted-foreground">{c.status}</p>
+                      <p className="truncate text-sm font-medium text-[#050505]">{c.company}</p>
+                      <p className="text-[11px] capitalize text-[#65676b]">{c.status}</p>
                     </div>
-                    <p className="font-mono text-sm font-semibold">{formatCurrency(c.monthlyBudget)}</p>
+                    <p className="font-mono text-sm font-semibold text-[#050505]">{formatCurrency(c.monthlyBudget)}</p>
                   </div>
                 ))}
             </div>
-          </GlassCard>
+          </div>
         </div>
       </PageContainer>
     </Layout>
@@ -402,12 +400,12 @@ function HeroStat({
   const display =
     kind === "currency" ? formatCurrency(animated) : kind === "roas" ? `${animated.toFixed(2)}x` : formatNumber(Math.round(animated));
   return (
-    <div className={`rounded-xl border p-3 ${accent ? "border-primary/30 bg-primary/10" : "border-border/60 bg-card/40"}`}>
-      <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+    <div className={`rounded-lg border p-3 ${accent ? "border-[#b3d4ff] bg-[#e7f3ff]" : "border-[#e4e6eb] bg-[#f0f2f5]"}`}>
+      <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-[#65676b]">
         {icon}
         {label}
       </div>
-      <div className={`mt-1 truncate font-display text-xl font-bold tabular-nums ${accent ? "text-primary" : "text-foreground"}`}>
+      <div className={`mt-1 truncate text-xl font-bold tabular-nums ${accent ? "text-[#1877f2]" : "text-[#050505]"}`}>
         {display}
       </div>
     </div>
@@ -428,27 +426,27 @@ type Insight = {
 
 function InsightCard({ icon, title, detail, delta, tone, index }: Insight & { index: number }) {
   const toneClass =
-    tone === "success" ? "text-success" : tone === "warning" ? "text-warning" : "text-primary";
+    tone === "success" ? "text-[#42b72a]" : tone === "warning" ? "text-[#f59e0b]" : "text-[#1877f2]";
   return (
     <div
-      className="glass hover-glow rounded-2xl border border-border p-4 duration-500 animate-in fade-in slide-in-from-bottom-2 fill-mode-both"
+      className="rounded-lg border border-[#e4e6eb] bg-white p-4 duration-500 animate-in fade-in slide-in-from-bottom-2 fill-mode-both hover:shadow-sm transition-shadow"
       style={{ animationDelay: `${index * 50}ms` }}
     >
       <div className="flex items-start gap-3">
-        <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-muted/50 ${toneClass}`}>
+        <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#f0f2f5] ${toneClass}`}>
           {icon}
         </span>
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-foreground">{title}</span>
+            <span className="text-sm font-semibold text-[#050505]">{title}</span>
             {delta !== undefined && (
-              <span className={`inline-flex items-center gap-0.5 text-[11px] font-bold ${delta >= 0 ? "text-success" : "text-destructive"}`}>
+              <span className={`inline-flex items-center gap-0.5 text-[11px] font-bold ${delta >= 0 ? "text-[#42b72a]" : "text-[#d32f2f]"}`}>
                 {delta >= 0 ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
                 {delta >= 0 ? "+" : ""}{delta}%
               </span>
             )}
           </div>
-          <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{detail}</p>
+          <p className="mt-0.5 text-xs leading-relaxed text-[#65676b]">{detail}</p>
         </div>
       </div>
     </div>
@@ -462,14 +460,14 @@ function InsightCard({ icon, title, detail, delta, tone, index }: Insight & { in
 function HealthRing({ score }: { score: number }) {
   const animated = useCountUp(score, 900);
   const tone = scoreTone(score);
-  const color = tone === "success" ? "hsl(var(--success))" : tone === "warning" ? "hsl(var(--warning))" : "hsl(var(--destructive))";
+  const color = tone === "success" ? "#42b72a" : tone === "warning" ? "#f59e0b" : "#d32f2f";
   const r = 18;
   const circ = 2 * Math.PI * r;
   const offset = circ - (animated / 100) * circ;
   return (
     <div className="relative flex h-12 w-12 shrink-0 items-center justify-center">
       <svg className="h-12 w-12 -rotate-90" viewBox="0 0 44 44">
-        <circle cx="22" cy="22" r={r} fill="none" stroke="hsl(var(--muted))" strokeWidth="4" />
+        <circle cx="22" cy="22" r={r} fill="none" stroke="#e4e6eb" strokeWidth="4" />
         <circle cx="22" cy="22" r={r} fill="none" stroke={color} strokeWidth="4" strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={offset} />
       </svg>
       <span className="absolute font-mono text-xs font-bold" style={{ color }}>{Math.round(animated)}</span>
@@ -483,10 +481,10 @@ function HealthRing({ score }: { score: number }) {
 
 function PortalStat({ label, value, sub }: { label: string; value: string; sub: string }) {
   return (
-    <div className="rounded-xl border border-border/60 bg-card/40 p-3">
-      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</p>
-      <p className="mt-1 font-display text-lg font-bold text-foreground">{value}</p>
-      <p className="mt-0.5 text-[11px] text-muted-foreground">{sub}</p>
+    <div className="rounded-lg border border-[#e4e6eb] bg-[#f0f2f5] p-3">
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-[#65676b]">{label}</p>
+      <p className="mt-1 text-lg font-bold text-[#050505]">{value}</p>
+      <p className="mt-0.5 text-[11px] text-[#65676b]">{sub}</p>
     </div>
   );
 }
@@ -494,23 +492,23 @@ function PortalStat({ label, value, sub }: { label: string; value: string; sub: 
 function cnGrowth(growth: number) {
   return `inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-bold ${
     growth >= 0
-      ? "border-success/25 bg-success/10 text-success"
-      : "border-destructive/25 bg-destructive/10 text-destructive"
+      ? "border-[#42b72a]/25 bg-[#e6f4ea] text-[#2e7d32]"
+      : "border-[#d32f2f]/25 bg-[#fdeaea] text-[#d32f2f]"
   }`;
 }
 
 function EmptyCampaigns() {
   return (
     <div className="flex flex-col items-center justify-center gap-3 py-10 text-center">
-      <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+      <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#e7f3ff] text-[#1877f2]">
         <Rocket className="h-5 w-5" />
       </span>
       <div>
-        <p className="text-sm font-semibold text-foreground">Launch your first Meta campaign</p>
-        <p className="mt-0.5 text-xs text-muted-foreground">Build campaigns, track performance and manage creatives in minutes.</p>
+        <p className="text-sm font-semibold text-[#050505]">Launch your first Meta campaign</p>
+        <p className="mt-0.5 text-xs text-[#65676b]">Build campaigns, track performance and manage creatives in minutes.</p>
       </div>
       <Link href="/campaigns">
-        <span className="cursor-pointer rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground shadow-md">Create Campaign</span>
+        <span className="cursor-pointer rounded-lg bg-[#1877f2] px-4 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-[#166fe5]">Create Campaign</span>
       </Link>
     </div>
   );
