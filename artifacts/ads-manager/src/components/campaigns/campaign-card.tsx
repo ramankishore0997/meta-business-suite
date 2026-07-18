@@ -1,14 +1,43 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useToggleCampaign, getListCampaignsQueryKey } from "@workspace/api-client-react";
 import { useCampaignsUI } from "./context";
-import { ObjectiveBadge } from "./objectives";
-import { DeliveryPill } from "@/components/delivery-pill";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatCurrency, formatNumber } from "@/lib/format";
-import { cpc, roas, cpl, healthScore, placementsFor, resolveExtras, useCampaignExtrasMap, type CampaignExtras } from "@/lib/perf";
+import { roas, resolveExtras, useCampaignExtrasMap, type CampaignExtras } from "@/lib/perf";
 import { cn } from "@/lib/utils";
-import { Maximize2 } from "lucide-react";
 import type { Campaign } from "@workspace/api-client-react";
+
+function Toggle({ checked, onToggle }: { checked: boolean; onToggle: () => void }) {
+  return (
+    <button
+      onClick={(e) => { e.stopPropagation(); onToggle(); }}
+      className={cn(
+        "relative inline-flex h-[20px] w-[36px] items-center rounded-full transition-colors duration-200",
+        checked ? "bg-[#1877f2]" : "bg-[#bcc0c4]"
+      )}
+    >
+      <span
+        className={cn(
+          "inline-block h-[16px] w-[16px] rounded-full bg-white shadow-sm transition-transform duration-200",
+          checked ? "translate-x-[18px]" : "translate-x-[2px]"
+        )}
+      />
+    </button>
+  );
+}
+
+function DeliveryDot({ status }: { status: string }) {
+  const colors: Record<string, string> = {
+    active: "bg-[#31a243]",
+    learning: "bg-[#f5a623]",
+    error: "bg-[#d32f2f]",
+    off: "bg-[#bcc0c4]",
+    not_delivering: "bg-[#f4511e]",
+  };
+  return (
+    <span className={cn("mr-1.5 inline-block h-[6px] w-[6px] rounded-full", colors[status] || colors.off)} />
+  );
+}
 
 export function CampaignCard({ campaign, index }: { campaign: Campaign; index: number }) {
   const { isSelected, toggleSelect, openDrawer, activeCampaignId } = useCampaignsUI();
@@ -18,89 +47,111 @@ export function CampaignCard({ campaign, index }: { campaign: Campaign; index: n
   const [extrasMap] = useCampaignExtrasMap();
   const extras: CampaignExtras = resolveExtras(campaign, extrasMap);
   const toggle = useToggleCampaign({ mutation: { onSuccess: () => queryClient.invalidateQueries({ queryKey: getListCampaignsQueryKey() }) } });
-  const roasVal = roas(extras.revenue, campaign.amountSpent);
-  const health = healthScore(campaign);
-  const placements = placementsFor(campaign.id);
   const budget = campaign.dailyBudget ?? campaign.totalBudget ?? null;
   const isActiveStatus = campaign.status === "ACTIVE";
+
+  const deliveryLabel = campaign.delivery === "active" ? "Active"
+    : campaign.delivery === "learning" ? "Learning"
+    : campaign.delivery === "error" ? "Error"
+    : campaign.delivery === "not_delivering" ? "Learning Limited"
+    : "Paused";
 
   return (
     <tr
       onClick={(e) => {
-        if ((e.target as HTMLElement).closest('button, a, [role="switch"], [role="checkbox"], [role="menuitem"]')) return;
+        if ((e.target as HTMLElement).closest('button, a, [role="switch"], [role="checkbox"], [role="menuitem"], input')) return;
         openDrawer(campaign.id);
       }}
       className={cn(
-        "cursor-pointer border-b border-[#e4e6eb] transition-colors",
+        "group cursor-pointer border-b border-[#dadde1] transition-colors",
         isActive ? "bg-[#e7f3ff]" : "hover:bg-[#f0f2f5]"
       )}
     >
-      {/* Checkbox + Name */}
-      <td className="px-4 py-4" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center gap-3">
-          <Checkbox checked={selected} onCheckedChange={() => toggleSelect(campaign.id)} className="rounded border-[#ccc]" />
-          <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <span className="truncate text-[13px] font-semibold text-[#1c1e21]">{campaign.name}</span>
-              {campaign.abTestEnabled && <span className="rounded bg-[#fff8e1] px-1.5 py-0.5 text-[10px] font-bold text-[#f57f17]">A/B</span>}
-            </div>
-            <div className="mt-1 flex items-center gap-2 text-[12px] text-[#666]">
-              <ObjectiveBadge objective={campaign.objective} />
-              {placements.slice(0, 2).map((p) => (
-                <span key={p.key} className="flex items-center gap-1 text-[11px]">
-                  <span className="h-1.5 w-1.5 rounded-full" style={{ background: p.color }} />
-                  {p.label}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
+      {/* Checkbox */}
+      <td className="sticky left-0 z-10 border-r border-[#dadde1] bg-white px-3" style={{ width: 44, minWidth: 44 }} onClick={(e) => e.stopPropagation()}>
+        <Checkbox checked={selected} onCheckedChange={() => toggleSelect(campaign.id)} className="border-[#bcc0c4] rounded-[3px]" />
       </td>
 
-      {/* Status Toggle */}
-      <td className="px-4 py-4">
-        <button
-          onClick={(e) => { e.stopPropagation(); toggle.mutate({ id: campaign.id }); }}
-          className={cn("relative inline-flex h-5 w-9 items-center rounded-full transition-colors", isActiveStatus ? "bg-[#42b72a]" : "bg-[#e4e6eb]")}
-        >
-          <span className={cn("inline-block h-4 w-4 rounded-full bg-white shadow transition-transform", isActiveStatus ? "translate-x-4" : "translate-x-0.5")} />
-        </button>
+      {/* Off/On Toggle */}
+      <td className="sticky left-[44px] z-10 border-r border-[#dadde1] bg-white px-3" style={{ width: 80, minWidth: 80 }} onClick={(e) => e.stopPropagation()}>
+        <Toggle checked={isActiveStatus} onToggle={() => toggle.mutate({ id: campaign.id })} />
+      </td>
+
+      {/* Campaign Name */}
+      <td className="sticky left-[124px] z-10 border-r border-[#dadde1] bg-white px-3 py-2.5" style={{ width: 300, minWidth: 300 }}>
+        <div className="truncate text-[13px] font-semibold text-[#0264c9] hover:underline">{campaign.name}</div>
       </td>
 
       {/* Delivery */}
-      <td className="px-4 py-4">
-        <DeliveryPill status={campaign.delivery} />
+      <td className="border-r border-[#dadde1] bg-white px-3 py-2.5" style={{ width: 140, minWidth: 140 }}>
+        <div className="flex items-center text-[12px] text-[#1c2b33]">
+          <DeliveryDot status={campaign.delivery} />
+          {deliveryLabel}
+        </div>
       </td>
 
-      {/* Budget */}
-      <td className="px-4 py-4 text-right">
-        {budget ? (
-          <span className="text-[13px] font-medium text-[#1c1e21]">{formatCurrency(budget)}</span>
-        ) : (
-          <span className="text-[13px] text-[#999]">—</span>
-        )}
+      {/* Actions */}
+      <td className="border-r border-[#dadde1] bg-white px-3 py-2.5 text-[12px] text-[#65676b]" style={{ width: 170, minWidth: 170 }}>
+        —
       </td>
 
       {/* Results */}
-      <td className="px-4 py-4 text-right">
-        <span className="text-[13px] font-medium text-[#1c1e21]">{formatNumber(campaign.results)}</span>
+      <td className="border-r border-[#dadde1] bg-white px-3 py-2.5" style={{ width: 130, minWidth: 130 }}>
+        <div className="text-[13px] font-semibold text-[#1c2b33]">
+          {campaign.results > 0 ? formatNumber(campaign.results) : "—"}
+        </div>
+        <div className="text-[11px] text-[#65676b]">
+          {campaign.objective === "TRAFFIC" ? "Link clicks" : campaign.objective === "LEADS" ? "Leads" : "Results"}
+        </div>
       </td>
 
-      {/* Cost */}
-      <td className="px-4 py-4 text-right">
-        <span className="text-[13px] text-[#1c1e21]">{campaign.results > 0 ? formatCurrency(campaign.amountSpent / campaign.results) : "—"}</span>
+      {/* Cost per result */}
+      <td className="border-r border-[#dadde1] bg-white px-3 py-2.5" style={{ width: 130, minWidth: 130 }}>
+        <div className="text-[13px] font-semibold text-[#1c2b33]">
+          {campaign.results > 0 ? formatCurrency(campaign.amountSpent / campaign.results) : "—"}
+        </div>
+        <div className="text-[11px] text-[#65676b]">
+          Per {campaign.objective === "TRAFFIC" ? "link click" : campaign.objective === "LEADS" ? "lead" : "result"}
+        </div>
       </td>
 
-      {/* ROAS */}
-      <td className="px-4 py-4 text-right">
-        <span className={cn("text-[13px] font-semibold", roasVal >= 2 ? "text-[#2e7d32]" : roasVal >= 1 ? "text-[#1c1e21]" : "text-[#d32f2f]")}>
-          {roasVal.toFixed(2)}x
-        </span>
+      {/* Budget */}
+      <td className="border-r border-[#dadde1] bg-white px-3 py-2.5" style={{ width: 120, minWidth: 120 }}>
+        {budget ? (
+          <>
+            <div className="text-[13px] font-semibold text-[#1c2b33]">{formatCurrency(budget)}</div>
+            <div className="text-[11px] text-[#65676b]">Daily budget</div>
+          </>
+        ) : (
+          <>
+            <div className="text-[13px] text-[#65676b]">Using ad set budget</div>
+            <div className="text-[11px] text-[#65676b]">Not shared</div>
+          </>
+        )}
       </td>
 
-      {/* Expand */}
-      <td className="px-4 py-4">
-        <Maximize2 className="h-3.5 w-3.5 text-[#ccc] opacity-0 transition-opacity group-hover:opacity-100" />
+      {/* Amount spent */}
+      <td className="border-r border-[#dadde1] bg-white px-3 py-2.5 text-right" style={{ width: 130, minWidth: 130 }}>
+        <div className="text-[13px] font-semibold text-[#1c2b33]">{formatCurrency(campaign.amountSpent)}</div>
+      </td>
+
+      {/* Impressions */}
+      <td className="border-r border-[#dadde1] bg-white px-3 py-2.5 text-right" style={{ width: 130, minWidth: 130 }}>
+        <div className="text-[13px] font-semibold text-[#1c2b33]">
+          {campaign.impressions > 0 ? formatNumber(campaign.impressions) : "—"}
+        </div>
+      </td>
+
+      {/* Reach */}
+      <td className="border-r border-[#dadde1] bg-white px-3 py-2.5 text-right" style={{ width: 120, minWidth: 120 }}>
+        <div className="text-[13px] font-semibold text-[#1c2b33]">
+          {campaign.reach > 0 ? formatNumber(campaign.reach) : "—"}
+        </div>
+      </td>
+
+      {/* Ends */}
+      <td className="bg-white px-3 py-2.5 text-[12px] text-[#1c2b33]" style={{ width: 100, minWidth: 100 }}>
+        {campaign.endDate ? new Date(campaign.endDate).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "Ongoing"}
       </td>
     </tr>
   );
