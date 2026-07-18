@@ -1,0 +1,717 @@
+You are a world-class SaaS designer, product strategist and senior frontend engineer.
+
+Transform the current dashboard into a premium Meta Ads Operating System.
+
+Current platform already includes:
+
+✔ Dark luxury UI
+✔ Glassmorphism
+✔ Aurora backgrounds
+✔ Dashboard
+✔ Reports
+✔ Billing
+✔ Clients
+✔ Team
+✔ Integrations
+✔ Settings
+✔ Notifications
+✔ Command Palette
+✔ Sidebar
+✔ Campaign CRUD
+✔ AdSets CRUD
+✔ Ads CRUD
+✔ Charts
+✔ CSV Export
+✔ localStorage persistence
+✔ Analytics
+
+DO NOT TOUCH
+
+Backend
+Database
+APIs
+Existing logic
+
+ONLY improve the user experience.
+
+The goal is:
+
+Client opens the dashboard.
+
+Within 5 seconds says:
+
+"Damn this looks better than Meta Ads Manager."
+
+━━━━━━━━━━━━━━━━━━━
+
+PRODUCT POSITIONING
+
+Rename internally as:
+
+META ADS OPERATING SYSTEM
+
+Tagline:
+
+Manage campaigns, creatives, budgets and performance from one premium workspace.
+
+Feel:
+
+Meta × Apple × Linear × Arc × Stripe
+
+Clean.
+
+Simple.
+
+Visual.
+
+Elegant.
+
+Fast.
+
+━━━━━━━━━━━━━━━━━━━
+
+TOP HERO SECTION
+
+Create a premium hero section.
+
+Glass panel.
+
+Large typography.
+
+Welcome back, Rahul
+
+Meta Ads Operating System
+
+5 Active Campaigns
+
+₹184,520 Spend
+
+1,582 Leads
+
+ROAS 3.7x
+
+Last synced 3 mins ago
+
+Animated metrics.
+
+Count up animation.
+
+Smooth transitions.
+
+Micro interactions.
+
+━━━━━━━━━━━━━━━━━━━
+
+AI INSIGHTS MODULE
+
+Add an AI Insights Card.
+
+Premium glass effect.
+
+Blue glow.
+
+Top priority placement.
+
+Suggested insights:
+
+CTR increased 18%
+
+Lead cost decreased 12%
+
+Campaign outperforming benchmark
+
+Audience fatigue risk low
+
+Budget exhaustion expected in 4 days
+
+Best performing creative detected
+
+Instagram Reels delivering 41% better CPL
+
+Lead quality improving
+
+Use icons.
+
+Pulse animations.
+
+Mini charts.
+
+━━━━━━━━━━━━━━━━━━━
+
+CAMPAIGN HEALTH SYSTEM
+
+Each campaign gets:
+
+Health Score
+
+Optimization Score
+
+Learning Status
+
+Audience Saturation
+
+Delivery Score
+
+Budget Utilization
+
+Health indicators:
+
+95+
+
+Excellent
+
+85+
+
+Good
+
+70+
+
+Needs Attention
+
+Below 70
+
+Warning
+
+Visual progress rings.
+
+Animated indicators.
+
+━━━━━━━━━━━━━━━━━━━
+
+META STATUS BADGES
+
+Do not use:
+
+Active
+
+Paused
+
+Completed
+
+Replace with:
+
+🟢 Delivering
+
+🟡 Learning
+
+🟠 Learning Limited
+
+🔵 Scheduled
+
+🔴 Paused
+
+⚫ Archived
+
+Premium pill badges.
+
+Gradient backgrounds.
+
+━━━━━━━━━━━━━━━━━━━
+
+CAMPAIGN CARDS
+
+Replace boring cards.
+
+Each campaign card should look luxurious.
+
+Example:
+
+━━━━━━━━━━━━━━
+
+Lead Generation Campaign
+
+🟢 Delivering
+
+Spend
+
+₹48,700
+
+Results
+
+362 Leads
+
+CPL
+
+₹134
+
+ROAS
+
+2.9x
+
+CTR
+
+3.4%
+
+Reach
+
+148,000
+
+Last Updated
+
+12 Minutes Ago
+
+Client
+
+ABC Realty
+
+Manager
+
+Rahul
+
+Health
+
+94%
+
+━━━━━━━━━━━━━━
+
+Quick Actions
+
+Open Campaign
+
+Pause
+
+Duplicate
+
+Archive
+
+Edit
+
+━━━━━━━━━━━━━━
+
+Hover state:
+
+Lift animation
+
+Glow effect
+
+Soft shadows
+
+━━━━━━━━━━━━━━━━━━━
+
+ACTIVITY TIMELINE
+
+Create timeline module.
+
+Premium vertical timeline.
+
+Example:
+
+Today
+
+Campaign Published
+
+2 Hours Ago
+
+New Creative Added
+
+4 Hours Ago
+
+Audience Optimized
+
+Yesterday
+
+Budget Increased
+
+Yesterday
+
+Ad Set Modified
+
+3 Days Ago
+
+Creative Updated
+
+Animated dots.
+
+Smooth reveal effects.
+
+━━━━━━━━━━━━━━━━━━━
+
+CREATIVE GALLERY
+
+This is extremely important.
+
+Agency must showcase creatives.
+
+Dedicated module:
+
+Creative Gallery
+
+Grid layout.
+
+Premium cards.
+
+Image preview.
+
+Video preview.
+
+Carousel preview.
+
+Meta Feed preview.
+
+Instagram Story preview.
+
+Instagram Reel preview.
+
+Facebook Feed preview.
+
+Creative URL system.
+
+No uploads.
+
+Only links.
+
+Fields:
+
+Creative URL
+
+Paste Image URL
+
+Paste Video URL
+
+Automatically detect:
+
+jpg
+
+png
+
+webp
+
+jpeg
+
+gif
+
+mp4
+
+mov
+
+webm
+
+If image:
+
+Show image preview.
+
+If video:
+
+Playable preview.
+
+Fullscreen support.
+
+Open in new tab.
+
+Download button.
+
+Copy URL button.
+
+Zoom mode.
+
+Lightbox effect.
+
+Client should instantly understand:
+
+"These are the actual creatives running in campaigns."
+
+━━━━━━━━━━━━━━━━━━━
+
+CAMPAIGN PERFORMANCE PANEL
+
+Most important feature.
+
+Campaign metrics must NOT be hidden.
+
+Place panel:
+
+BOTTOM RIGHT
+
+Sticky.
+
+Glass card.
+
+Floating.
+
+Always visible.
+
+Collapsed by default.
+
+Expandable.
+
+Title:
+
+Performance Controls
+
+Editable metrics:
+
+Spend
+
+Results
+
+Leads
+
+Purchases
+
+Revenue
+
+CTR
+
+CPM
+
+CPC
+
+ROAS
+
+Reach
+
+Impressions
+
+Frequency
+
+CPL
+
+Cost Per Result
+
+Save
+
+Undo
+
+Reset
+
+Autosave
+
+Changes should instantly update:
+
+Dashboard
+
+Reports
+
+Billing
+
+Charts
+
+Client portal
+
+Notifications
+
+Timeline
+
+Activity history
+
+Campaign cards
+
+Health score
+
+Everything reactive.
+
+━━━━━━━━━━━━━━━━━━━
+
+CAMPAIGN TEMPLATES
+
+Create section.
+
+Templates:
+
+Lead Generation
+
+Ecommerce Sales
+
+WhatsApp Leads
+
+Website Traffic
+
+Brand Awareness
+
+Course Sales
+
+Real Estate Leads
+
+Consultation Leads
+
+Local Business Leads
+
+Instagram Growth
+
+One click setup.
+
+Premium cards.
+
+━━━━━━━━━━━━━━━━━━━
+
+CLIENT PORTAL SUMMARY
+
+Glass card.
+
+Large metrics.
+
+Active Campaigns
+
+Spend
+
+Leads
+
+Revenue
+
+ROAS
+
+Performance
+
+Growth
+
+This Month
+
+Last Month
+
+Comparison
+
+Animated charts.
+
+━━━━━━━━━━━━━━━━━━━
+
+COMMAND CENTER
+
+⌘ K
+
+Search Campaigns
+
+Search Clients
+
+Search Creatives
+
+Open Billing
+
+Open Reports
+
+Open Dashboard
+
+Create Campaign
+
+Create Ad Set
+
+Create Ad
+
+Export Reports
+
+View Insights
+
+View Creatives
+
+Premium search modal.
+
+Raycast inspired.
+
+━━━━━━━━━━━━━━━━━━━
+
+EMPTY STATES
+
+Never show:
+
+No Campaign Found
+
+Instead:
+
+🚀 Launch Your First Meta Campaign
+
+Build campaigns, track performance and manage creatives in minutes.
+
+Create Campaign
+
+Premium illustration.
+
+Subtle animation.
+
+━━━━━━━━━━━━━━━━━━━
+
+AGENCY BRANDING
+
+Top Left
+
+Agency Logo
+
+Agency Name
+
+Verified Badge
+
+Meta Ads Partner
+
+Trusted Agency
+
+Premium styling.
+
+━━━━━━━━━━━━━━━━━━━
+
+MICRO INTERACTIONS
+
+Hover animations
+
+Smooth counters
+
+Blur transitions
+
+Glass reflections
+
+Animated borders
+
+Button glow
+
+Progress indicators
+
+Loading skeletons
+
+Success animations
+
+Achievement confetti
+
+Metric transitions
+
+Card expansion animation
+
+Soft shadows
+
+Spring physics
+
+━━━━━━━━━━━━━━━━━━━
+
+DESIGN REFERENCES
+
+Meta Ads Manager
+
+Linear
+
+Stripe
+
+Apple
+
+Vercel
+
+Arc Browser
+
+Raycast
+
+Superhuman
+
+Notion
+
+Framer
+
+Goal:
+
+The dashboard should no longer feel like an admin panel.
+
+It should feel like an elite Meta Ads Operating System worth $299/month.
+
+Users should immediately trust the agency after seeing it.
+
+Everything should communicate:
+
+Premium.
+
+Reliable.
+
+Modern.
+
+Professional.
+
+Simple.
+
+Powerful.
+
+Meta-focused.
+
+Beautiful.

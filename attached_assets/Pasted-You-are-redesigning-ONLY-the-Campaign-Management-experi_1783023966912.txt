@@ -1,0 +1,591 @@
+You are redesigning ONLY the Campaign Management experience.
+
+Forget generic CRM dashboards.
+
+Forget agency panels.
+
+Forget enterprise clutter.
+
+This product is now exclusively a **Meta Ads Management Platform**.
+
+The user should immediately understand:
+
+"Running Meta campaigns is simple, visual and effortless."
+
+Think:
+
+Meta Ads Manager × Apple × Linear × Arc Browser.
+
+The experience should be cleaner, faster and more beautiful than Meta Business Manager.
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+MAIN GOAL
+
+Campaign creation and management should feel EASY.
+
+Not technical.
+
+Not overwhelming.
+
+Not spreadsheet style.
+
+Everything visual.
+
+Everything guided.
+
+Everything premium.
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+META ADS STRUCTURE
+
+Campaign
+↓
+Ad Set
+↓
+Ads
+
+Only Meta Ads.
+
+No Google.
+
+No TikTok.
+
+No LinkedIn.
+
+No other platforms.
+
+Entire UI dedicated to Meta.
+
+Use Meta blue accents.
+
+Subtle Facebook inspired design language.
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+CAMPAIGNS PAGE
+
+Current implementation feels confusing.
+
+Redesign completely.
+
+Campaign management should feel like Notion + Linear.
+
+Instead of large tables.
+
+Use visual campaign cards.
+
+Each campaign card contains:
+
+Campaign Name
+
+Objective Badge
+
+Status
+
+Spend
+
+Results
+
+Cost Per Result
+
+Reach
+
+CTR
+
+ROAS
+
+Budget
+
+Date
+
+Last Updated
+
+Health Score
+
+Performance Indicator
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+META OBJECTIVES
+
+Awareness
+
+Traffic
+
+Engagement
+
+Leads
+
+Sales
+
+App Promotion
+
+Messages
+
+Each objective has icon.
+
+Each objective has color.
+
+Each objective has tooltip.
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+CAMPAIGN CREATION FLOW
+
+Make campaign creation extremely simple.
+
+Use wizard steps.
+
+STEP 1
+
+Campaign Name
+
+Objective
+
+Budget
+
+Status
+
+Save
+
+Continue
+
+STEP 2
+
+Audience
+
+Location
+
+Age
+
+Gender
+
+Placements
+
+Optimization Goal
+
+STEP 3
+
+Creative Setup
+
+Creative URL
+
+Headline
+
+Primary Text
+
+CTA
+
+Destination URL
+
+Preview
+
+STEP 4
+
+Publish
+
+Review
+
+Finish
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+CAMPAIGN DETAILS EXPERIENCE
+
+When clicking campaign.
+
+Do NOT open another page.
+
+Open a premium fullscreen drawer.
+
+Width:
+
+90%
+
+Blur backdrop.
+
+Glass effect.
+
+Smooth animation.
+
+Inside:
+
+Overview Tab
+
+Ad Sets Tab
+
+Ads Tab
+
+Performance Tab
+
+Creative Tab
+
+History Tab
+
+Comments Tab
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+PERFORMANCE CONTROLS
+
+THIS IS VERY IMPORTANT
+
+Campaign metrics should NOT be mixed inside campaign info.
+
+Users are getting confused.
+
+Instead create a floating panel.
+
+Bottom Right.
+
+Sticky.
+
+Glass card.
+
+Always visible.
+
+Name:
+
+Performance Controls
+
+Campaign Spend
+
+Results
+
+Leads
+
+Purchases
+
+ROAS
+
+CTR
+
+CPM
+
+Reach
+
+Impressions
+
+Frequency
+
+Cost Per Result
+
+Revenue
+
+Editable.
+
+Save.
+
+Undo.
+
+Reset.
+
+Auto Save.
+
+Changes update:
+
+Dashboard
+
+Billing
+
+Reports
+
+Client View
+
+Charts
+
+Notifications
+
+Everywhere instantly.
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+AD SETS
+
+Visual cards.
+
+Easy.
+
+Clean.
+
+Not technical.
+
+Fields:
+
+Audience Name
+
+Location
+
+Age
+
+Gender
+
+Placements
+
+Optimization Goal
+
+Budget
+
+Status
+
+Spend
+
+Results
+
+CTR
+
+Reach
+
+Performance Badge
+
+Expandable.
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+ADS SECTION
+
+This should become the most beautiful part.
+
+Every ad displayed as premium creative card.
+
+Large preview.
+
+Center aligned.
+
+Beautiful shadows.
+
+Rounded corners.
+
+Modern borders.
+
+Each ad card contains:
+
+Creative Preview
+
+Creative Name
+
+Headline
+
+CTA
+
+Status
+
+Spend
+
+Results
+
+ROAS
+
+Comments
+
+Likes
+
+Shares
+
+Clicks
+
+Conversions
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+CREATIVE URL SYSTEM
+
+No uploads.
+
+Agency hosts creatives externally.
+
+Examples:
+
+Cloudinary
+
+S3
+
+Supabase
+
+CDN
+
+R2
+
+Google Cloud
+
+User pastes URL.
+
+Creative URL Field
+
+Paste URL Here
+
+Auto detect:
+
+jpg
+
+jpeg
+
+png
+
+webp
+
+gif
+
+mp4
+
+mov
+
+webm
+
+Show preview automatically.
+
+Images render beautifully.
+
+Videos playable directly.
+
+Fullscreen mode.
+
+Zoom.
+
+Play.
+
+Pause.
+
+Open original.
+
+Copy link.
+
+Download.
+
+Client can instantly see ad creatives.
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+META FEEL
+
+Entire interface should feel inspired by Meta.
+
+Blue highlights.
+
+Rounded UI.
+
+Smooth animations.
+
+Modern.
+
+Less complexity.
+
+Less clutter.
+
+No spreadsheets.
+
+No giant tables.
+
+No overwhelming analytics.
+
+Everything simple.
+
+Everything visual.
+
+Everything premium.
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+CAMPAIGN CARD EXAMPLE
+
+━━━━━━━━━━━━━━━
+
+Lead Generation Campaign
+
+● Active
+
+₹48,500 Spend
+
+356 Leads
+
+₹136 CPL
+
+2.8 ROAS
+
+CTR 3.1%
+
+Reach 148K
+
+Last Updated 2 Hours Ago
+
+━━━━━━━━━━━━━━━
+
+Audience
+
+Delhi
+
+Age 25–45
+
+Placements
+
+Instagram
+
+Facebook
+
+Stories
+
+Reels
+
+━━━━━━━━━━━━━━━
+
+View Campaign
+
+Edit
+
+Duplicate
+
+Pause
+
+Archive
+
+━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+USER EXPERIENCE GOAL
+
+Even a beginner should understand campaign management within 30 seconds.
+
+No learning curve.
+
+No complexity.
+
+No agency jargon.
+
+No enterprise confusion.
+
+It should feel:
+
+Apple-level simplicity.
+
+Linear-level polish.
+
+Meta-level familiarity.
+
+A premium Meta Ads operating system designed for agencies.
+
+Target feeling:
+
+"Managing campaigns here feels easier than inside Meta Ads Manager itself."
+
+Only improve Campaigns.
+
+Only improve Ad Sets.
+
+Only improve Ads.
+
+Do not touch backend.
+
+Do not touch database.
+
+Do not touch clients.
+
+Do not touch billing.
+
+Do not touch reports.
+
+Do not touch settings.
+
+Make campaign management beautiful, visual, simple and addictive to use.

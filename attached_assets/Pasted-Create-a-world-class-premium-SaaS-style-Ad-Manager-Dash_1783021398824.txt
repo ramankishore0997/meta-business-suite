@@ -1,0 +1,497 @@
+Create a world-class, premium SaaS-style **Ad Manager Dashboard** inspired by Meta Ads Manager, Linear, Stripe, Vercel and Apple-level design aesthetics.
+
+Goal:
+Build a client-facing advertising management panel where an agency can manually enter campaign data, spending, results and performance metrics and present reports to clients in an elegant, enterprise-grade interface.
+
+Overall Feel:
+Ultra premium.
+Minimalistic.
+Dark luxury interface.
+Glassmorphism effects.
+Smooth animations.
+Micro interactions.
+Modern typography.
+Professional agency look.
+Feels like a $100M SaaS startup.
+
+Design Language:
+
+* Apple inspired UI
+* Linear inspired sidebar
+* Stripe inspired analytics cards
+* Meta Ads Manager inspired structure
+* Vercel style clean spacing
+* Premium gradients
+* Subtle shadows
+* Soft borders
+* Blur effects
+* High-end dashboard appearance
+
+Primary Colors:
+Background:
+#0B0F19
+
+Secondary Background:
+#111827
+
+Cards:
+rgba(255,255,255,0.04)
+
+Accent:
+#3B82F6
+
+Success:
+#10B981
+
+Warning:
+#F59E0B
+
+Danger:
+#EF4444
+
+Typography:
+Inter
+SF Pro Display
+Space Grotesk
+
+Rounded corners:
+18px–24px
+
+Animations:
+Framer Motion style transitions
+
+Hover Effects:
+Glow effects
+Elevation effect
+Scale animation
+Smooth transitions
+
+Dashboard Layout:
+
+Left Sidebar
+
+Agency Logo
+
+Dashboard
+
+Campaigns
+
+Ad Sets
+
+Ads
+
+Clients
+
+Analytics
+
+Reports
+
+Invoices
+
+Billing
+
+Integrations
+
+Team Members
+
+Settings
+
+Logout
+
+Collapsible Sidebar
+
+Floating Glass Navigation
+
+Top Navbar
+
+Search Bar
+
+Notifications
+
+Agency Profile
+
+Dark Mode Toggle
+
+Client Switcher
+
+Date Range Selector
+
+Export Report Button
+
+Campaign Creation Button
+
+Stats Section
+
+Total Spend
+
+Total Impressions
+
+Total Clicks
+
+CTR
+
+CPC
+
+CPM
+
+ROAS
+
+Conversions
+
+Leads
+
+Purchases
+
+Revenue
+
+Cost Per Lead
+
+Return On Investment
+
+Each card should contain
+
+Trend indicator
+
+Sparkline graph
+
+Percentage increase
+
+Comparison vs previous period
+
+Campaign Structure
+
+Campaign Level
+
+Campaign Name
+
+Campaign Objective
+
+Status
+
+Budget
+
+Start Date
+
+End Date
+
+Buying Type
+
+Special Ad Category
+
+Optimization Goal
+
+Spend
+
+Reach
+
+Impressions
+
+Results
+
+Frequency
+
+CTR
+
+CPM
+
+CPC
+
+Link Clicks
+
+Landing Page Views
+
+Leads
+
+Revenue
+
+ROAS
+
+Custom Notes
+
+Editable Fields
+
+Save Button
+
+Update Button
+
+Duplicate Button
+
+Archive Button
+
+Delete Button
+
+Ad Set Level
+
+Audience Name
+
+Country
+
+Age Range
+
+Gender
+
+Placements
+
+Interests
+
+Behaviors
+
+Lookalikes
+
+Custom Audience
+
+Daily Budget
+
+Lifetime Budget
+
+Bid Strategy
+
+Optimization Event
+
+Schedule
+
+Device Targeting
+
+Spend
+
+Reach
+
+Impressions
+
+Results
+
+CTR
+
+CPM
+
+CPC
+
+Conversions
+
+Editable inputs
+
+Manual data entry enabled
+
+Ads Level
+
+Creative Name
+
+Status
+
+Format
+
+Image
+
+Video
+
+Carousel
+
+Headline
+
+Primary Text
+
+CTA Button
+
+Destination URL
+
+UTM Parameters
+
+Preview Window
+
+Spend
+
+Clicks
+
+Conversions
+
+ROAS
+
+Comments
+
+Likes
+
+Shares
+
+Video Views
+
+Cost Per Result
+
+Engagement Rate
+
+Performance Score
+
+Analytics Section
+
+Interactive charts
+
+Line Graph
+
+Bar Graph
+
+Pie Chart
+
+Area Chart
+
+Funnel Chart
+
+Performance Trends
+
+Audience Breakdown
+
+Device Breakdown
+
+Country Breakdown
+
+Age Breakdown
+
+Gender Breakdown
+
+Hourly Analysis
+
+Weekly Analysis
+
+Monthly Analysis
+
+Yearly Analysis
+
+Reports Section
+
+Beautiful PDF style report layout
+
+Agency Branding
+
+Client Logo
+
+Client Name
+
+Campaign Overview
+
+Performance Summary
+
+Charts
+
+Insights
+
+Recommendations
+
+Custom Comments
+
+Download PDF Button
+
+Export CSV
+
+Export Excel
+
+Print Report
+
+Client Portal
+
+Client Login
+
+View Only Access
+
+Custom Branding
+
+White Label Experience
+
+Agency Domain Support
+
+Progress Tracking
+
+Campaign Completion Percentage
+
+Optimization Score
+
+Campaign Health Score
+
+Alert System
+
+Budget Warning
+
+High CPM Alert
+
+Low CTR Alert
+
+Learning Phase Alert
+
+Notifications
+
+Activity Feed
+
+Campaign Updates
+
+Spend Updates
+
+Performance Updates
+
+Team Comments
+
+Internal Notes
+
+Tasks
+
+Assign Members
+
+Checklist
+
+Approval Status
+
+Design Requirements
+
+Every section should open individually.
+
+Campaign → expandable.
+
+Ad Set → expandable.
+
+Ads → expandable.
+
+Nested hierarchy should work perfectly.
+
+Campaign
+└── Ad Sets
+└── Ads
+
+Smooth expand collapse animation.
+
+Editable tables.
+
+Inline editing.
+
+Auto save capability.
+
+Search and filtering.
+
+Pagination.
+
+Sorting.
+
+Bulk actions.
+
+Responsive layout.
+
+Desktop optimized.
+
+Tablet optimized.
+
+Mobile optimized.
+
+Glass effect cards.
+
+Premium charts.
+
+Million-dollar startup aesthetics.
+
+No generic admin panel look.
+
+No bootstrap appearance.
+
+No outdated UI.
+
+Everything should feel luxurious, modern and investor-ready.
+
+Build the interface exactly like a premium enterprise SaaS product used by top advertising agencies.
+
+The final result should look better than Meta Ads Manager, cleaner than HubSpot, more elegant than Stripe and visually comparable to Apple-designed software.
+
+Generate complete frontend architecture, reusable components, animations, state management, dummy datasets, editable forms, dashboard widgets, reporting modules and premium UI interactions.

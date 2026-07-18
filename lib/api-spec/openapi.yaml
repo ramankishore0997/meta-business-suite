@@ -1,0 +1,1101 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: Meta Ads Manager API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: campaigns
+    description: Campaign management
+  - name: adsets
+    description: Ad Set management
+  - name: ads
+    description: Ad management
+  - name: accounts
+    description: Ad account management
+  - name: insights
+    description: Performance insights and reporting
+  - name: Storage
+    description: Object storage upload and serving endpoints.
+
+paths:
+  /storage/uploads/request-url:
+    post:
+      tags: [Storage]
+      operationId: requestUploadUrl
+      summary: Request a presigned URL for file upload
+      description: |
+        Returns a presigned GCS URL for direct upload. The client sends JSON
+        metadata here, then uploads the file directly to the returned URL.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadUrlRequest'
+      responses:
+        '200':
+          description: Presigned upload URL generated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadUrlResponse'
+        '400':
+          description: Missing or invalid required fields.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Failed to generate upload URL.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /storage/public-objects/{filePath}:
+    get:
+      tags: [Storage]
+      operationId: getPublicObject
+      summary: Serve a public asset from PUBLIC_OBJECT_SEARCH_PATHS
+      description: |
+        Unconditionally public — no authentication or ACL checks.
+        Searches PUBLIC_OBJECT_SEARCH_PATHS for the given file path.
+      parameters:
+        - name: filePath
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Relative file path within the public search paths.
+      responses:
+        '200':
+          description: Object content streamed with correct Content-Type.
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: File not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Failed to serve public object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /storage/objects/{objectPath}:
+    get:
+      tags: [Storage]
+      operationId: getStorageObject
+      summary: Serve an object entity from PRIVATE_OBJECT_DIR
+      description: |
+        Serves object entities uploaded via presigned URLs. These can optionally
+        be protected with authentication or ACL checks based on the use case.
+      parameters:
+        - name: objectPath
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Object path within the private object dir (e.g. `uploads/some-uuid`).
+      responses:
+        '200':
+          description: Object content streamed with correct Content-Type.
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Object not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Failed to serve object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  # ─── CAMPAIGNS ───────────────────────────────────────────────────
+  /campaigns:
+    get:
+      operationId: listCampaigns
+      tags: [campaigns]
+      summary: List all campaigns
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: ["string", "null"]
+        - name: dateRange
+          in: query
+          schema:
+            type: ["string", "null"]
+      responses:
+        "200":
+          description: Campaign list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Campaign"
+    post:
+      operationId: createCampaign
+      tags: [campaigns]
+      summary: Create a campaign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CampaignInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+
+  /campaigns/{id}:
+    get:
+      operationId: getCampaign
+      tags: [campaigns]
+      summary: Get a campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Campaign
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+    patch:
+      operationId: updateCampaign
+      tags: [campaigns]
+      summary: Update a campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CampaignUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+    delete:
+      operationId: deleteCampaign
+      tags: [campaigns]
+      summary: Delete a campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /campaigns/{id}/toggle:
+    post:
+      operationId: toggleCampaign
+      tags: [campaigns]
+      summary: Toggle campaign on/off
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Toggled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+
+  /campaigns/{id}/duplicate:
+    post:
+      operationId: duplicateCampaign
+      tags: [campaigns]
+      summary: Duplicate a campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "201":
+          description: Duplicated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+
+  # ─── AD SETS ─────────────────────────────────────────────────────
+  /adsets:
+    get:
+      operationId: listAdSets
+      tags: [adsets]
+      summary: List ad sets
+      parameters:
+        - name: campaignId
+          in: query
+          schema:
+            type: ["integer", "null"]
+        - name: status
+          in: query
+          schema:
+            type: ["string", "null"]
+      responses:
+        "200":
+          description: Ad set list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdSet"
+    post:
+      operationId: createAdSet
+      tags: [adsets]
+      summary: Create an ad set
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdSetInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdSet"
+
+  /adsets/{id}:
+    get:
+      operationId: getAdSet
+      tags: [adsets]
+      summary: Get an ad set
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Ad set
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdSet"
+    patch:
+      operationId: updateAdSet
+      tags: [adsets]
+      summary: Update an ad set
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdSetUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdSet"
+    delete:
+      operationId: deleteAdSet
+      tags: [adsets]
+      summary: Delete an ad set
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /adsets/{id}/toggle:
+    post:
+      operationId: toggleAdSet
+      tags: [adsets]
+      summary: Toggle ad set on/off
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Toggled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdSet"
+
+  /adsets/{id}/duplicate:
+    post:
+      operationId: duplicateAdSet
+      tags: [adsets]
+      summary: Duplicate an ad set
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "201":
+          description: Duplicated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdSet"
+
+  # ─── ADS ─────────────────────────────────────────────────────────
+  /ads:
+    get:
+      operationId: listAds
+      tags: [ads]
+      summary: List ads
+      parameters:
+        - name: adsetId
+          in: query
+          schema:
+            type: ["integer", "null"]
+        - name: campaignId
+          in: query
+          schema:
+            type: ["integer", "null"]
+        - name: status
+          in: query
+          schema:
+            type: ["string", "null"]
+      responses:
+        "200":
+          description: Ads list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ad"
+    post:
+      operationId: createAd
+      tags: [ads]
+      summary: Create an ad
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ad"
+
+  /ads/{id}:
+    get:
+      operationId: getAd
+      tags: [ads]
+      summary: Get an ad
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Ad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ad"
+    patch:
+      operationId: updateAd
+      tags: [ads]
+      summary: Update an ad
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ad"
+    delete:
+      operationId: deleteAd
+      tags: [ads]
+      summary: Delete an ad
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /ads/{id}/toggle:
+    post:
+      operationId: toggleAd
+      tags: [ads]
+      summary: Toggle ad on/off
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Toggled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ad"
+
+  /ads/{id}/duplicate:
+    post:
+      operationId: duplicateAd
+      tags: [ads]
+      summary: Duplicate an ad
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "201":
+          description: Duplicated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ad"
+
+  # ─── INSIGHTS / SUMMARY ──────────────────────────────────────────
+  /insights/summary:
+    get:
+      operationId: getInsightsSummary
+      tags: [insights]
+      summary: Get aggregate performance summary across all campaigns
+      parameters:
+        - name: dateRange
+          in: query
+          schema:
+            type: ["string", "null"]
+      responses:
+        "200":
+          description: Summary metrics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InsightsSummary"
+
+  /insights/campaigns:
+    get:
+      operationId: getCampaignInsights
+      tags: [insights]
+      summary: Get per-campaign breakdown insights
+      parameters:
+        - name: dateRange
+          in: query
+          schema:
+            type: ["string", "null"]
+      responses:
+        "200":
+          description: Campaign insights list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CampaignInsight"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+
+    UploadUrlRequest:
+      type: object
+      required: [name, size, contentType]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Original file name.
+        size:
+          type: integer
+          minimum: 1
+          description: File size in bytes.
+        contentType:
+          type: string
+          minLength: 1
+          description: MIME type of the file (e.g. `image/jpeg`).
+    UploadUrlResponse:
+      type: object
+      required: [uploadURL, objectPath]
+      properties:
+        uploadURL:
+          type: string
+          format: uri
+          description: Presigned GCS URL for PUT upload.
+        objectPath:
+          type: string
+          description: Normalized object path (e.g. `/objects/uploads/uuid`). Store this in your database.
+        metadata:
+          $ref: '#/components/schemas/UploadUrlRequest'
+    ErrorEnvelope:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+
+    # ── Campaign ──────────────────────────────────────────────────
+    Campaign:
+      type: object
+      required: [id, name, status, objective, budgetType, dailyBudget, totalBudget, amountSpent, impressions, reach, clicks, results, costPerResult, cpm, ctr, frequency, delivery, startDate, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        status:
+          type: string
+          enum: [ACTIVE, PAUSED, DELETED, ARCHIVED]
+        objective:
+          type: string
+          enum: [AWARENESS, TRAFFIC, ENGAGEMENT, LEADS, APP_PROMOTION, SALES, MESSAGES]
+        budgetType:
+          type: string
+          enum: [daily, lifetime, ad_set_budget]
+        dailyBudget:
+          type: ["number", "null"]
+        totalBudget:
+          type: ["number", "null"]
+        amountSpent:
+          type: number
+        impressions:
+          type: integer
+        reach:
+          type: integer
+        clicks:
+          type: integer
+        results:
+          type: integer
+        costPerResult:
+          type: ["number", "null"]
+        cpm:
+          type: ["number", "null"]
+        ctr:
+          type: ["number", "null"]
+        frequency:
+          type: ["number", "null"]
+        delivery:
+          type: string
+          enum: [active, learning, off, error, not_delivering]
+        startDate:
+          type: string
+        endDate:
+          type: ["string", "null"]
+        buyingType:
+          type: ["string", "null"]
+        specialCategories:
+          type: ["string", "null"]
+        abTestEnabled:
+          type: ["boolean", "null"]
+        recommendation:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    CampaignInput:
+      type: object
+      required: [name, objective, budgetType]
+      properties:
+        name:
+          type: string
+        objective:
+          type: string
+          enum: [AWARENESS, TRAFFIC, ENGAGEMENT, LEADS, APP_PROMOTION, SALES, MESSAGES]
+        budgetType:
+          type: string
+          enum: [daily, lifetime, ad_set_budget]
+        dailyBudget:
+          type: ["number", "null"]
+        totalBudget:
+          type: ["number", "null"]
+        amountSpent:
+          type: ["number", "null"]
+        costPerResult:
+          type: ["number", "null"]
+        buyingType:
+          type: ["string", "null"]
+        specialCategories:
+          type: ["string", "null"]
+        startDate:
+          type: ["string", "null"]
+        endDate:
+          type: ["string", "null"]
+        abTestEnabled:
+          type: ["boolean", "null"]
+
+    CampaignUpdate:
+      type: object
+      properties:
+        name:
+          type: ["string", "null"]
+        status:
+          type: ["string", "null"]
+        objective:
+          type: ["string", "null"]
+        budgetType:
+          type: ["string", "null"]
+        dailyBudget:
+          type: ["number", "null"]
+        totalBudget:
+          type: ["number", "null"]
+        amountSpent:
+          type: ["number", "null"]
+        costPerResult:
+          type: ["number", "null"]
+        buyingType:
+          type: ["string", "null"]
+        specialCategories:
+          type: ["string", "null"]
+        startDate:
+          type: ["string", "null"]
+        endDate:
+          type: ["string", "null"]
+        abTestEnabled:
+          type: ["boolean", "null"]
+
+    # ── Ad Set ────────────────────────────────────────────────────
+    AdSet:
+      type: object
+      required: [id, campaignId, campaignName, name, status, delivery, amountSpent, impressions, reach, clicks, results, costPerResult, cpm, ctr, frequency, startDate, createdAt]
+      properties:
+        id:
+          type: integer
+        campaignId:
+          type: integer
+        campaignName:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          enum: [ACTIVE, PAUSED, DELETED, ARCHIVED]
+        delivery:
+          type: string
+          enum: [active, learning, off, error, not_delivering]
+        budgetType:
+          type: string
+          enum: [daily, lifetime]
+        budget:
+          type: ["number", "null"]
+        amountSpent:
+          type: number
+        impressions:
+          type: integer
+        reach:
+          type: integer
+        clicks:
+          type: integer
+        results:
+          type: integer
+        costPerResult:
+          type: ["number", "null"]
+        cpm:
+          type: ["number", "null"]
+        ctr:
+          type: ["number", "null"]
+        frequency:
+          type: ["number", "null"]
+        audience:
+          type: ["string", "null"]
+        placement:
+          type: ["string", "null"]
+        optimization:
+          type: ["string", "null"]
+        billingEvent:
+          type: ["string", "null"]
+        conversionLocation:
+          type: ["string", "null"]
+        facebookPage:
+          type: ["string", "null"]
+        performanceGoal:
+          type: ["string", "null"]
+        gender:
+          type: ["string", "null"]
+        ageMin:
+          type: ["integer", "null"]
+        ageMax:
+          type: ["integer", "null"]
+        languages:
+          type: ["string", "null"]
+        location:
+          type: ["string", "null"]
+        detailedTargeting:
+          type: ["string", "null"]
+        placementMode:
+          type: ["string", "null"]
+        startDate:
+          type: string
+        endDate:
+          type: ["string", "null"]
+        recommendation:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    AdSetInput:
+      type: object
+      required: [campaignId, name, budgetType]
+      properties:
+        campaignId:
+          type: integer
+        name:
+          type: string
+        budgetType:
+          type: string
+          enum: [daily, lifetime]
+        budget:
+          type: ["number", "null"]
+        amountSpent:
+          type: ["number", "null"]
+        costPerResult:
+          type: ["number", "null"]
+        audience:
+          type: ["string", "null"]
+        placement:
+          type: ["string", "null"]
+        optimization:
+          type: ["string", "null"]
+        conversionLocation:
+          type: ["string", "null"]
+        facebookPage:
+          type: ["string", "null"]
+        performanceGoal:
+          type: ["string", "null"]
+        gender:
+          type: ["string", "null"]
+        ageMin:
+          type: ["integer", "null"]
+        ageMax:
+          type: ["integer", "null"]
+        languages:
+          type: ["string", "null"]
+        location:
+          type: ["string", "null"]
+        detailedTargeting:
+          type: ["string", "null"]
+        placementMode:
+          type: ["string", "null"]
+        startDate:
+          type: ["string", "null"]
+        endDate:
+          type: ["string", "null"]
+
+    AdSetUpdate:
+      type: object
+      properties:
+        name:
+          type: ["string", "null"]
+        status:
+          type: ["string", "null"]
+        budgetType:
+          type: ["string", "null"]
+        budget:
+          type: ["number", "null"]
+        amountSpent:
+          type: ["number", "null"]
+        costPerResult:
+          type: ["number", "null"]
+        audience:
+          type: ["string", "null"]
+        conversionLocation:
+          type: ["string", "null"]
+        facebookPage:
+          type: ["string", "null"]
+        performanceGoal:
+          type: ["string", "null"]
+        gender:
+          type: ["string", "null"]
+        ageMin:
+          type: ["integer", "null"]
+        ageMax:
+          type: ["integer", "null"]
+        languages:
+          type: ["string", "null"]
+        location:
+          type: ["string", "null"]
+        detailedTargeting:
+          type: ["string", "null"]
+        placementMode:
+          type: ["string", "null"]
+        placement:
+          type: ["string", "null"]
+        startDate:
+          type: ["string", "null"]
+        endDate:
+          type: ["string", "null"]
+
+    # ── Ad ────────────────────────────────────────────────────────
+    Ad:
+      type: object
+      required: [id, adsetId, adsetName, campaignId, campaignName, name, status, delivery, format, amountSpent, impressions, reach, clicks, results, costPerResult, cpm, ctr, frequency, createdAt]
+      properties:
+        id:
+          type: integer
+        adsetId:
+          type: integer
+        adsetName:
+          type: string
+        campaignId:
+          type: integer
+        campaignName:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          enum: [ACTIVE, PAUSED, DELETED, ARCHIVED]
+        delivery:
+          type: string
+          enum: [active, learning, off, error, not_delivering]
+        format:
+          type: string
+          enum: [image, video, carousel, collection, stories]
+        headline:
+          type: ["string", "null"]
+        primaryText:
+          type: ["string", "null"]
+        description:
+          type: ["string", "null"]
+        callToAction:
+          type: ["string", "null"]
+        destinationUrl:
+          type: ["string", "null"]
+        previewUrl:
+          type: ["string", "null"]
+        mediaUrl:
+          type: ["string", "null"]
+        identityPage:
+          type: ["string", "null"]
+        instagramHandle:
+          type: ["string", "null"]
+        amountSpent:
+          type: number
+        impressions:
+          type: integer
+        reach:
+          type: integer
+        clicks:
+          type: integer
+        results:
+          type: integer
+        costPerResult:
+          type: ["number", "null"]
+        cpm:
+          type: ["number", "null"]
+        ctr:
+          type: ["number", "null"]
+        frequency:
+          type: ["number", "null"]
+        recommendation:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    AdInput:
+      type: object
+      required: [adsetId, name, format]
+      properties:
+        adsetId:
+          type: integer
+        name:
+          type: string
+        format:
+          type: string
+          enum: [image, video, carousel, collection, stories]
+        amountSpent:
+          type: ["number", "null"]
+        costPerResult:
+          type: ["number", "null"]
+        headline:
+          type: ["string", "null"]
+        primaryText:
+          type: ["string", "null"]
+        description:
+          type: ["string", "null"]
+        callToAction:
+          type: ["string", "null"]
+        destinationUrl:
+          type: ["string", "null"]
+        mediaUrl:
+          type: ["string", "null"]
+        identityPage:
+          type: ["string", "null"]
+        instagramHandle:
+          type: ["string", "null"]
+
+    AdUpdate:
+      type: object
+      properties:
+        name:
+          type: ["string", "null"]
+        status:
+          type: ["string", "null"]
+        format:
+          type: ["string", "null"]
+        amountSpent:
+          type: ["number", "null"]
+        costPerResult:
+          type: ["number", "null"]
+        headline:
+          type: ["string", "null"]
+        primaryText:
+          type: ["string", "null"]
+        description:
+          type: ["string", "null"]
+        callToAction:
+          type: ["string", "null"]
+        destinationUrl:
+          type: ["string", "null"]
+        mediaUrl:
+          type: ["string", "null"]
+        identityPage:
+          type: ["string", "null"]
+        instagramHandle:
+          type: ["string", "null"]
+
+    # ── Insights ──────────────────────────────────────────────────
+    InsightsSummary:
+      type: object
+      required: [totalSpend, totalImpressions, totalReach, totalClicks, totalResults, avgCpm, avgCtr, avgCostPerResult, activeCampaigns, totalCampaigns]
+      properties:
+        totalSpend:
+          type: number
+        totalImpressions:
+          type: integer
+        totalReach:
+          type: integer
+        totalClicks:
+          type: integer
+        totalResults:
+          type: integer
+        avgCpm:
+          type: number
+        avgCtr:
+          type: number
+        avgCostPerResult:
+          type: ["number", "null"]
+        activeCampaigns:
+          type: integer
+        totalCampaigns:
+          type: integer
+
+    CampaignInsight:
+      type: object
+      required: [campaignId, campaignName, spend, impressions, reach, clicks, results, cpm, ctr]
+      properties:
+        campaignId:
+          type: integer
+        campaignName:
+          type: string
+        spend:
+          type: number
+        impressions:
+          type: integer
+        reach:
+          type: integer
+        clicks:
+          type: integer
+        results:
+          type: integer
+        cpm:
+          type: number
+        ctr:
+          type: number

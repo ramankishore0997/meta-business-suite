@@ -1,0 +1,5 @@
+- [Express handler 404 guard braces](express-404-guard.md) — `if (!x) res.status(404)...; return;` without braces makes return unconditional and hangs the happy path; always brace the guard.
+- [PATCH null-clearing convention](patch-null-clearing.md) — nullable PATCH fields must guard with `"field" in body` (not `!= null`) so explicit null clears; notNull keep `!= null`.
+- [Performance Controls panel](perf-controls-panel.md) — open it only via `openPerf`; it must close the drawer (z-index) and bump `perfNonce` to force-expand, else the button looks dead.
+- [Autosave + context-switch race](autosave-context-switch-race.md) — a load effect that skips-while-saving never reruns after the active entity switches mid-save; track last-loaded id + guard late callbacks by target id.
+- [Off-Replit deploy (Railway)](railway-external-deploy.md) — external hosts need ONE service (backend serves frontend + /api); vite build must not require PORT/BASE_PATH; image upload (Replit sidecar) won't work off-Replit.

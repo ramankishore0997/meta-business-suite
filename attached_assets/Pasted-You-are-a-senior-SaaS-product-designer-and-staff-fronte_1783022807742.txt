@@ -1,0 +1,737 @@
+You are a senior SaaS product designer and staff frontend engineer.
+
+Upgrade the existing Ad Manager platform into a true enterprise-grade advertising operating system.
+
+Current system is already completed:
+
+✔ Dark Luxury Theme
+✔ Apple-level glassmorphism
+✔ Dashboard
+✔ Clients
+✔ Invoices
+✔ Team
+✔ Integrations
+✔ Billing
+✔ Reports
+✔ Settings
+✔ Notifications
+✔ Client Switcher
+✔ Command Palette
+✔ localStorage persistence
+✔ Premium sidebar
+✔ Analytics
+✔ Charts
+✔ CSV export
+✔ Campaign CRUD
+✔ Dashboard insights
+✔ Backend untouched
+
+Now focus ONLY on Campaigns, Ad Sets and Ads modules.
+
+Goal:
+Make Campaigns, Ad Sets and Ads feel better than Meta Ads Manager.
+
+No placeholders.
+
+No dummy admin tables.
+
+No generic CRUD.
+
+Everything should feel like a $500M SaaS product.
+
+────────────────────────
+
+CAMPAIGN STRUCTURE
+
+Campaign
+└── Ad Sets
+└── Ads
+
+Nested hierarchy must work perfectly.
+
+Campaign expandable.
+
+Ad Set expandable.
+
+Ads expandable.
+
+Animated opening.
+
+Animated closing.
+
+Smooth transitions.
+
+Persistent open state.
+
+Remember expanded sections.
+
+Remember scroll position.
+
+────────────────────────
+
+CAMPAIGNS PAGE
+
+Route:
+/campaigns
+
+Design:
+
+Luxury SaaS.
+
+Glass containers.
+
+Blur effects.
+
+Premium spacing.
+
+Beautiful dividers.
+
+Campaign cards.
+
+Not tables.
+
+Card-based interface.
+
+Each campaign card contains:
+
+Campaign Name
+
+Objective
+
+Status
+
+Budget
+
+Spend
+
+Results
+
+ROAS
+
+CTR
+
+CPM
+
+CPC
+
+Reach
+
+Impressions
+
+Leads
+
+Conversions
+
+Created date
+
+Last edited
+
+Client
+
+Assigned manager
+
+Health score
+
+Performance score
+
+Learning phase
+
+Campaign tags
+
+Platform badges
+
+Meta
+
+Google
+
+TikTok
+
+LinkedIn
+
+X
+
+Pinterest
+
+Expandable Campaign
+
+Inside campaign show:
+
+Ad Sets section
+
+Metrics section
+
+Timeline
+
+Internal notes
+
+Attachments
+
+Client comments
+
+Activity history
+
+Status changes
+
+Audit logs
+
+────────────────────────
+
+IMPORTANT REQUIREMENT
+
+Campaign spend and results editing should NOT appear inside the main campaign details area.
+
+Create a dedicated floating metrics panel.
+
+Position:
+
+BOTTOM RIGHT CORNER
+
+Sticky
+
+Visible at all times
+
+Premium glass card
+
+Collapsed by default
+
+Expandable
+
+Label:
+
+Performance Controls
+
+Inside Performance Controls:
+
+Campaign Spend
+
+Campaign Results
+
+Campaign Revenue
+
+Campaign Leads
+
+Campaign Purchases
+
+Campaign ROAS
+
+Campaign CPM
+
+Campaign CPC
+
+Campaign CTR
+
+Campaign Reach
+
+Campaign Impressions
+
+Campaign Frequency
+
+Campaign CPL
+
+Campaign Cost Per Result
+
+Editable inputs.
+
+Auto save.
+
+Save button.
+
+Reset button.
+
+Undo changes.
+
+Live update everywhere.
+
+When edited:
+
+Dashboard updates
+
+Reports update
+
+Billing updates
+
+Client portal updates
+
+Analytics update
+
+Charts update
+
+Notifications update
+
+Activity log update
+
+Everything reactive.
+
+This panel should become the main place for entering campaign performance.
+
+Easy to find.
+
+Easy to access.
+
+Located bottom right.
+
+Always accessible.
+
+────────────────────────
+
+AD SETS
+
+Each campaign contains multiple ad sets.
+
+Card design.
+
+Glassmorphism.
+
+Luxury layout.
+
+Fields:
+
+Ad Set Name
+
+Audience
+
+Countries
+
+Age
+
+Gender
+
+Interests
+
+Behaviors
+
+Placements
+
+Budget
+
+Bid Strategy
+
+Optimization Event
+
+Schedule
+
+Device targeting
+
+Spend
+
+Results
+
+Reach
+
+CTR
+
+CPM
+
+CPC
+
+Conversions
+
+Leads
+
+Frequency
+
+Status
+
+Manager
+
+Tags
+
+Expandable.
+
+Accordion style.
+
+Inside Ad Set:
+
+Audience insights
+
+Estimated audience size
+
+Heatmaps
+
+Device distribution
+
+Placement distribution
+
+Age distribution
+
+Gender distribution
+
+Country distribution
+
+Performance timeline
+
+Change history
+
+Internal comments
+
+────────────────────────
+
+ADS MODULE
+
+Each Ad Set contains Ads.
+
+Cards.
+
+Beautiful previews.
+
+Creative preview centered.
+
+Large preview area.
+
+Aspect ratio preserved.
+
+Rounded corners.
+
+Shadow effects.
+
+Premium border.
+
+Ad card contains:
+
+Creative Name
+
+Status
+
+Format
+
+Image
+
+Video
+
+Carousel
+
+Collection
+
+Headline
+
+Primary Text
+
+CTA
+
+Destination URL
+
+Tracking URL
+
+UTM tags
+
+Spend
+
+Results
+
+ROAS
+
+CTR
+
+Engagement
+
+Likes
+
+Comments
+
+Shares
+
+Clicks
+
+Video views
+
+Conversions
+
+Performance score
+
+────────────────────────
+
+CREATIVE PREVIEW SYSTEM
+
+VERY IMPORTANT
+
+Agency uploads creatives to cloud storage.
+
+Example:
+
+Cloudinary
+
+Supabase
+
+S3
+
+CDN
+
+Google Cloud
+
+R2
+
+External hosting
+
+Inside Ads create:
+
+Creative URL field
+
+Placeholder:
+
+Paste image or video URL
+
+When URL added:
+
+Auto preview.
+
+Detect file type.
+
+If image:
+
+Show image.
+
+If video:
+
+Show playable video.
+
+If MP4:
+
+HTML5 player.
+
+If WebM:
+
+HTML5 player.
+
+If JPG PNG WEBP:
+
+Image renderer.
+
+Loading state.
+
+Skeleton state.
+
+Error state.
+
+Preview unavailable state.
+
+Fullscreen modal.
+
+Zoom image.
+
+Play video.
+
+Download creative button.
+
+Copy URL button.
+
+Open in new tab.
+
+Client should be able to view creatives exactly as they were used in campaign.
+
+No upload system needed.
+
+Only URL based preview system.
+
+Agency manually pastes creative links.
+
+Example:
+
+https://cdn.domain.com/ad1.jpg
+
+https://cdn.domain.com/video1.mp4
+
+https://res.cloudinary.com/agency/video/upload/ad.mp4
+
+────────────────────────
+
+AD DETAILS DRAWER
+
+Click ad.
+
+Open right side panel.
+
+Width:
+
+500px
+
+Smooth animation.
+
+Contains:
+
+Creative preview
+
+Metrics
+
+Headline
+
+Description
+
+CTA
+
+Landing page
+
+Tracking
+
+Comments
+
+Notes
+
+Performance history
+
+Change log
+
+Preview modal
+
+────────────────────────
+
+BULK ACTIONS
+
+Select campaigns.
+
+Bulk archive.
+
+Bulk duplicate.
+
+Bulk pause.
+
+Bulk activate.
+
+Bulk delete.
+
+Bulk export.
+
+Bulk assign.
+
+Bulk labels.
+
+────────────────────────
+
+FILTERS
+
+Objective
+
+Status
+
+Client
+
+Date
+
+Spend
+
+Results
+
+Manager
+
+ROAS
+
+Platform
+
+Tags
+
+Search
+
+Saved filters.
+
+Recent filters.
+
+────────────────────────
+
+UI FEATURES
+
+Infinite scrolling.
+
+Virtualization.
+
+Loading skeletons.
+
+Micro interactions.
+
+Premium hover effects.
+
+Glass borders.
+
+Animated counters.
+
+Gradient charts.
+
+Beautiful empty states.
+
+Command menu integration.
+
+Keyboard shortcuts.
+
+⌘K
+
+⌘N
+
+⌘S
+
+ESC
+
+────────────────────────
+
+DESIGN REFERENCES
+
+Meta Ads Manager
+
+Linear
+
+Stripe
+
+Apple
+
+Arc Browser
+
+Vercel
+
+Framer
+
+Raycast
+
+Notion Calendar
+
+Superhuman
+
+────────────────────────
+
+DO NOT TOUCH
+
+Database schema
+
+Backend
+
+Existing APIs
+
+Dashboard logic
+
+Clients
+
+Invoices
+
+Reports
+
+Billing
+
+Team
+
+Settings
+
+Notifications
+
+Only improve Campaigns.
+
+Ad Sets.
+
+Ads.
+
+Creative previews.
+
+Metrics controls.
+
+Performance editing.
+
+UI polish.
+
+Animations.
+
+Hierarchy.
+
+User experience.
+
+Goal:
+
+A client should open the system and immediately think:
+
+"This looks more premium than Meta Ads Manager."
+
+This should feel like an elite agency operating system worth $299/month.

@@ -1,0 +1,59 @@
+import { Link, useLocation } from "wouter";
+import { 
+  LayoutGrid, 
+  BarChart3,
+  Wallet
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+
+export function NavSidebar() {
+  const [location] = useLocation();
+
+  const navItems = [
+    { icon: LayoutGrid, label: "Campaigns", href: "/" },
+    { icon: BarChart3, label: "Analytics", href: "/analytics" },
+    { icon: Wallet, label: "Payments", href: "/payments" },
+  ];
+
+  return (
+    <div className="w-[68px] bg-sidebar border-r border-border flex flex-col items-center py-5 flex-shrink-0 z-20 shadow-[1px_0_10px_rgba(0,0,0,0.02)]">
+      <Link href="/">
+        <div
+          title="Manager"
+          className="mb-8 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
+        >
+          <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-primary-foreground shadow-sm shadow-primary/20">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5" />
+              <path d="M2 12l10 5 10-5" />
+            </svg>
+          </div>
+        </div>
+      </Link>
+
+      <nav className="flex flex-col gap-3 w-full px-3">
+        {navItems.map((item) => {
+          const isActive = 
+            item.href === "/" ? location === "/" : location.startsWith(item.href);
+            
+          return (
+            <Link key={item.label} href={item.href}>
+              <div
+                title={item.label}
+                className={cn(
+                  "p-3 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer relative",
+                  isActive 
+                    ? "bg-primary text-primary-foreground shadow-sm" 
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                )}
+              >
+                <item.icon className={cn("w-[22px] h-[22px]", isActive ? "stroke-[2.5px]" : "stroke-2")} />
+              </div>
+            </Link>
+          );
+        })}
+      </nav>
+    </div>
+  );
+}
