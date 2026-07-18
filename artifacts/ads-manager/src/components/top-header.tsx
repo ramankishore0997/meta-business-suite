@@ -8,14 +8,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -69,72 +61,66 @@ export function TopHeader() {
 
   return (
     <>
-      <header className="navbar-surface fixed left-0 right-0 top-0 z-50 flex h-[56px] items-center justify-between px-4">
-        {/* Left - Logo + Title */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="Logo" className="h-8 w-8 object-contain" />
-            <span className="text-[14px] font-semibold text-[#1c1e21]">Ads Manager</span>
-          </div>
+      <header className="navbar-surface fixed left-0 right-0 top-0 z-50 flex h-[48px] items-center justify-between px-3">
+        <div className="flex items-center gap-2.5">
+          <img src="/logo.png" alt="Logo" className="h-7 w-7 object-contain" />
+          <span className="text-[13px] font-semibold text-[#1c1e21]">Ads Manager</span>
         </div>
 
-        {/* Right - Actions */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 rounded-lg border border-[#e4e6eb] bg-[#f0f2f5] px-3 py-1.5 shadow-inner transition-all focus-within:bg-white focus-within:border-[#1877f2] focus-within:shadow-[0_0_0_2px_rgba(24,119,242,0.15)]">
-            <Search className="h-4 w-4 text-[#65676b]" />
+        <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 rounded border border-[#dadde1] bg-[#f0f2f5] px-2 py-1 transition-colors focus-within:bg-white focus-within:border-[#1877f2]">
+            <Search className="h-3.5 w-3.5 text-[#65676b]" />
             <input
               type="text"
               placeholder="Search"
-              className="w-[180px] bg-transparent text-[13px] text-[#1c1e21] outline-none placeholder:text-[#999]"
+              className="w-[160px] bg-transparent text-[12px] text-[#1c1e21] outline-none placeholder:text-[#8d949e]"
             />
           </div>
 
-          <button className="flex h-9 w-9 items-center justify-center rounded-lg text-[#65676b] transition-all hover:bg-[#f0f2f5] hover:shadow-sm active:scale-95">
-            <HelpCircle className="h-5 w-5" />
+          <button className="flex h-[32px] w-[32px] items-center justify-center rounded text-[#65676b] transition-colors hover:bg-[#f0f2f5]">
+            <HelpCircle className="h-4 w-4" />
           </button>
-          <button className="relative flex h-9 w-9 items-center justify-center rounded-lg text-[#65676b] transition-all hover:bg-[#f0f2f5] hover:shadow-sm active:scale-95">
-            <Bell className="h-5 w-5" />
-            <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-[#d32f2f] ring-2 ring-white" />
+          <button className="relative flex h-[32px] w-[32px] items-center justify-center rounded text-[#65676b] transition-colors hover:bg-[#f0f2f5]">
+            <Bell className="h-4 w-4" />
+            <span className="absolute right-1.5 top-1.5 h-[6px] w-[6px] rounded-full bg-[#d32f2f] ring-1 ring-white" />
           </button>
 
-          {/* Account selector */}
           <button
             onClick={() => { setNameDraft(account.name); setIdDraft(account.id); setOpen(true); }}
-            className="flex items-center gap-2 rounded-lg border border-[#e4e6eb] bg-white px-2 py-1 shadow-sm transition-all hover:bg-[#f0f2f5] hover:shadow-md active:scale-[0.98]"
+            className="flex items-center gap-1.5 rounded border border-[#dadde1] bg-white px-1.5 py-1 transition-colors hover:bg-[#f0f2f5]"
           >
-            <Avatar className="h-7 w-7 shadow-sm">
-              <AvatarFallback className="bg-[#1877f2] text-[11px] font-bold text-white shadow-inner">
+            <Avatar className="h-6 w-6">
+              <AvatarFallback className="bg-[#1877f2] text-[10px] font-bold text-white">
                 {account.name.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <span className="hidden text-[13px] font-semibold text-[#1c1e21] md:block">{account.name}</span>
-            <ChevronDown className="hidden h-3.5 w-3.5 text-[#65676b] md:block" />
+            <span className="hidden text-[12px] font-medium text-[#1c1e21] md:block">{account.name}</span>
+            <ChevronDown className="hidden h-3 w-3 text-[#65676b] md:block" />
           </button>
         </div>
       </header>
 
-      {/* Workspace editor dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-md rounded-lg border border-[#e4e6eb] p-0 shadow-2xl">
-          <div className="p-6 pb-0">
+        <DialogContent className="max-w-md rounded border border-[#dadde1] p-0">
+          <div className="p-5 pb-0">
             <DialogHeader>
-              <DialogTitle className="text-[16px] font-semibold text-[#1c1e21]">Workspace</DialogTitle>
-              <DialogDescription className="text-[13px] text-[#666]">Configure your agency workspace name and billing ID.</DialogDescription>
+              <DialogTitle className="text-[15px] font-semibold text-[#1c1e21]">Workspace</DialogTitle>
+              <DialogDescription className="text-[12px] text-[#65676b]">Configure your agency workspace name and billing ID.</DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4 py-5">
-              <div className="grid gap-2">
-                <Label className="text-[12px] font-semibold text-[#666]">Workspace Name</Label>
-                <Input value={nameDraft} onChange={(e) => setNameDraft(e.target.value)} placeholder="e.g. Meta Business Suite" className="input-focus h-10 rounded-lg border-[#e4e6eb] text-[13px]" />
+            <div className="grid gap-3 py-4">
+              <div className="grid gap-1.5">
+                <Label className="text-[11px] font-semibold text-[#65676b]">Workspace Name</Label>
+                <Input value={nameDraft} onChange={(e) => setNameDraft(e.target.value)} placeholder="e.g. Meta Business Suite" className="input-focus h-8 rounded border-[#dadde1] text-[12px]" />
               </div>
-              <div className="grid gap-2">
-                <Label className="text-[12px] font-semibold text-[#666]">Billing ID</Label>
-                <Input value={idDraft} onChange={(e) => setIdDraft(e.target.value)} placeholder="e.g. 392019485" className="input-focus h-10 rounded-lg border-[#e4e6eb] font-mono text-[13px]" />
+              <div className="grid gap-1.5">
+                <Label className="text-[11px] font-semibold text-[#65676b]">Billing ID</Label>
+                <Input value={idDraft} onChange={(e) => setIdDraft(e.target.value)} placeholder="e.g. 392019485" className="input-focus h-8 rounded border-[#dadde1] font-mono text-[12px]" />
               </div>
             </div>
           </div>
-          <div className="flex justify-end gap-2 border-t border-[#e4e6eb] bg-[#f7f8fa] p-4">
-            <Button variant="ghost" onClick={() => setOpen(false)} className="btn-meta rounded-lg text-[13px] font-semibold text-[#666]">Cancel</Button>
-            <Button onClick={save} className="btn-primary rounded-lg px-5 text-[13px] font-semibold text-white">Save Details</Button>
+          <div className="flex justify-end gap-1.5 border-t border-[#dadde1] bg-[#f5f6f8] p-3">
+            <Button variant="ghost" onClick={() => setOpen(false)} className="btn-meta rounded text-[12px] font-medium text-[#65676b]">Cancel</Button>
+            <Button onClick={save} className="btn-primary rounded px-3.5 text-[12px] font-medium text-white">Save Details</Button>
           </div>
         </DialogContent>
       </Dialog>

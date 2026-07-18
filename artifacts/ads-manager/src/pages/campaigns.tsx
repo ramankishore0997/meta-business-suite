@@ -16,14 +16,13 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import {
-  Plus, Copy, Trash2, Download, X, Megaphone, PlaySquare,
-  ChevronDown, Columns3, BarChart3, Settings2, MoreHorizontal, Info, FileDown,
+  Plus, ChevronDown, Search, Megaphone, PlaySquare,
+  BarChart3, Settings2, SlidersHorizontal, ArrowUpDown,
+  LayoutGrid, FileDown,
 } from "lucide-react";
 import { resolveExtras, roas, useCampaignExtrasMap } from "@/lib/perf";
 import { formatCurrency } from "@/lib/format";
 import type { Campaign, Ad } from "@workspace/api-client-react";
-
-const OBJECTIVES = ["AWARENESS", "TRAFFIC", "ENGAGEMENT", "LEADS", "APP_PROMOTION", "SALES", "MESSAGES"];
 
 function CampaignsInner() {
   const { data: campaigns = [], isLoading } = useListCampaigns({}, { query: { queryKey: getListCampaignsQueryKey() } });
@@ -34,8 +33,6 @@ function CampaignsInner() {
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [objectiveFilter, setObjectiveFilter] = useState("all");
-  const [sortBy, setSortBy] = useState("spend");
   const [createOpen, setCreateOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<EditTarget | null>(null);
   const [activeTab, setActiveTab] = useState<"campaigns" | "adsets" | "ads">("campaigns");
@@ -77,21 +74,12 @@ function CampaignsInner() {
   }, [ui]);
 
   const filtered = useMemo(() => {
-    let list = campaigns.filter((c) => {
+    return campaigns.filter((c) => {
       if (search && !c.name.toLowerCase().includes(search.toLowerCase())) return false;
       if (statusFilter !== "all" && c.status !== statusFilter) return false;
-      if (objectiveFilter !== "all" && c.objective !== objectiveFilter) return false;
       return true;
-    });
-    list = [...list].sort((a, b) => {
-      if (sortBy === "spend") return b.amountSpent - a.amountSpent;
-      if (sortBy === "results") return b.results - a.results;
-      if (sortBy === "roas") return roas(resolveExtras(b, extrasMap).revenue, b.amountSpent) - roas(resolveExtras(a, extrasMap).revenue, a.amountSpent);
-      if (sortBy === "recent") return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      return 0;
-    });
-    return list;
-  }, [campaigns, search, statusFilter, objectiveFilter, sortBy, extrasMap]);
+    }).sort((a, b) => b.amountSpent - a.amountSpent);
+  }, [campaigns, search, statusFilter]);
 
   const invalidateAll = () => {
     queryClient.invalidateQueries({ queryKey: getListCampaignsQueryKey() });
@@ -131,57 +119,71 @@ function CampaignsInner() {
 
   const allSelected = filtered.length > 0 && filtered.every((c) => ui.selected.includes(c.id));
   const totalSpend = filtered.reduce((s, c) => s + c.amountSpent, 0);
-  const hasFilters = search || statusFilter !== "all" || objectiveFilter !== "all";
 
   return (
     <div className="flex h-full flex-col bg-white">
-      {/* Account selector bar */}
-      <div className="flex items-center justify-between border-b border-[#dadde1] bg-white px-6 py-2.5">
-        <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 rounded-lg border border-[#dadde1] bg-white px-3 py-1.5 transition-colors hover:bg-[#f0f2f5]">
-            <div className="flex h-5 w-5 items-center justify-center rounded bg-[#1877f2] text-[9px] font-bold text-white">M</div>
-            <span className="text-[12px] font-semibold text-[#1c1e21]">All accounts</span>
-            <ChevronDown className="h-3 w-3 text-[#666]" />
-          </button>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1.5 rounded-lg border border-[#dadde1] bg-white px-3 py-1.5 text-[11px] text-[#1c1e21]">
-            <span className="h-[6px] w-[6px] rounded-full bg-[#42b72a]" />
-            Opportunity score
-          </span>
-        </div>
-      </div>
 
-      {/* Campaign Tabs */}
-      <div className="flex items-center gap-0 border-b border-[#dadde1] bg-white px-6 pt-2">
-        {(["campaigns", "adsets", "ads"] as const).map((tab) => (
+      {/* Campaigns / Ad Sets / Ads large connected navigation */}
+      <div className="border-b border-[#dadde1] bg-white px-4 pt-3">
+        <div className="flex gap-0">
           <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`flex items-center gap-1.5 rounded-t-lg px-4 py-2 text-[12px] font-semibold transition-colors ${
-              activeTab === tab
-                ? "border-b-2 border-[#1877f2] bg-[#e7f3ff] text-[#1877f2]"
-                : "text-[#65676b] hover:bg-[#f0f2f5]"
+            onClick={() => setActiveTab("campaigns")}
+            className={`flex flex-1 items-center justify-between rounded-t-md border border-b-0 px-4 py-3 text-[13px] font-semibold transition-colors ${
+              activeTab === "campaigns"
+                ? "border-[#1877f2] bg-[#e7f3ff] text-[#1877f2]"
+                : "border-[#dadde1] bg-[#f5f6f8] text-[#65676b] hover:bg-[#ebedf0]"
             }`}
           >
-            {tab === "campaigns" ? "Campaigns" : tab === "adsets" ? "Ad Sets" : "Ads"}
+            <span className="flex items-center gap-2">
+              <LayoutGrid className="h-4 w-4" />
+              Campaigns
+            </span>
+            <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${activeTab === "campaigns" ? "bg-[#d2e5fc] text-[#1877f2]" : "bg-[#e4e6eb] text-[#65676b]"}`}>
+              {campaigns.length}
+            </span>
           </button>
-        ))}
+          <button
+            onClick={() => setActiveTab("adsets")}
+            className={`flex flex-1 items-center justify-between rounded-t-md border border-b-0 px-4 py-3 text-[13px] font-semibold transition-colors ${
+              activeTab === "adsets"
+                ? "border-[#1877f2] bg-[#e7f3ff] text-[#1877f2]"
+                : "border-[#dadde1] bg-[#f5f6f8] text-[#65676b] hover:bg-[#ebedf0]"
+            }`}
+          >
+            <span className="flex items-center gap-2">
+              <SlidersHorizontal className="h-4 w-4" />
+              Ad sets
+            </span>
+            <span className="rounded-full bg-[#e4e6eb] px-2 py-0.5 text-[11px] font-medium text-[#65676b]">0</span>
+          </button>
+          <button
+            onClick={() => setActiveTab("ads")}
+            className={`flex flex-1 items-center justify-between rounded-t-md border border-b-0 px-4 py-3 text-[13px] font-semibold transition-colors ${
+              activeTab === "ads"
+                ? "border-[#1877f2] bg-[#e7f3ff] text-[#1877f2]"
+                : "border-[#dadde1] bg-[#f5f6f8] text-[#65676b] hover:bg-[#ebedf0]"
+            }`}
+          >
+            <span className="flex items-center gap-2">
+              <Megaphone className="h-4 w-4" />
+              Ads
+            </span>
+            <span className="rounded-full bg-[#e4e6eb] px-2 py-0.5 text-[11px] font-medium text-[#65676b]">0</span>
+          </button>
+        </div>
       </div>
 
-      {/* Filter chips */}
-      <div className="flex items-center gap-2 border-b border-[#dadde1] bg-white px-6 py-2.5">
-        <div className="flex items-center gap-1.5">
+      {/* Filter area: top filters + search */}
+      <div className="border-b border-[#dadde1] bg-white px-4 py-2.5">
+        <div className="flex items-center gap-1.5 mb-2">
           {[
-            { label: "All", value: "all" },
-            { label: "Active", value: "ACTIVE" },
-            { label: "Paused", value: "PAUSED" },
-            { label: "Archived", value: "ARCHIVED" },
+            { label: "All ads", value: "all" },
+            { label: "Active ads", value: "ACTIVE" },
           ].map((f) => (
             <button
               key={f.value}
               onClick={() => setStatusFilter(f.value)}
-              className={`rounded-full border px-3 py-1 text-[11px] font-medium transition-colors ${
+              className={`rounded border px-2.5 py-1 text-[12px] font-medium transition-colors ${
                 statusFilter === f.value
                   ? "border-[#1877f2] bg-[#e7f3ff] text-[#1877f2]"
                   : "border-[#dadde1] bg-white text-[#1c1e21] hover:bg-[#f0f2f5]"
@@ -190,52 +192,48 @@ function CampaignsInner() {
               {f.label}
             </button>
           ))}
-          <div className="mx-1 h-3 w-px bg-[#dadde1]" />
-          {OBJECTIVES.map((o) => (
-            <button
-              key={o}
-              onClick={() => setObjectiveFilter(objectiveFilter === o ? "all" : o)}
-              className={`rounded-full border px-3 py-1 text-[11px] font-medium transition-colors ${
-                objectiveFilter === o
-                  ? "border-[#1877f2] bg-[#e7f3ff] text-[#1877f2]"
-                  : "border-[#dadde1] bg-white text-[#1c1e21] hover:bg-[#f0f2f5]"
-              }`}
-            >
-              {o.charAt(0) + o.slice(1).toLowerCase().replace("_", " ")}
-            </button>
-          ))}
-          {hasFilters && (
-            <button
-              onClick={() => { setStatusFilter("all"); setObjectiveFilter("all"); setSearch(""); }}
-              className="flex items-center gap-1 rounded-full border border-[#dadde1] px-2 py-1 text-[11px] text-[#65676b] hover:bg-[#f0f2f5]"
-            >
-              <X className="h-2.5 w-2.5" /> Clear
-            </button>
-          )}
+          <button className="rounded border border-[#dadde1] bg-white px-2.5 py-1 text-[12px] font-medium text-[#1c1e21] hover:bg-[#f0f2f5]">
+            Actions
+          </button>
+          <button className="rounded border border-[#dadde1] bg-white px-2.5 py-1 text-[12px] font-medium text-[#1c1e21] hover:bg-[#f0f2f5]">
+            Had delivery
+          </button>
+          <button className="rounded border border-[#dadde1] bg-white px-2 py-1 text-[12px] font-medium text-[#1877f2] hover:bg-[#e7f3ff]">
+            + See more
+          </button>
+        </div>
+        <div className="relative">
+          <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#65676b]" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Describe what you're looking for"
+            className="h-8 w-full rounded border border-[#dadde1] bg-white pl-8 pr-3 text-[13px] text-[#1c1e21] outline-none placeholder:text-[#8d949e] focus:border-[#1877f2]"
+          />
         </div>
       </div>
 
-      {/* Main Toolbar */}
-      <div className="flex items-center justify-between border-b border-[#dadde1] bg-white px-6 py-2">
+      {/* Toolbar */}
+      <div className="flex items-center justify-between border-b border-[#dadde1] bg-white px-4 py-1.5">
         <div className="flex items-center gap-1">
-          {/* Green Create button */}
           <Button
             size="sm"
-            className="rounded-lg bg-[#42b72a] px-3 py-1.5 text-[11px] font-semibold text-white hover:bg-[#36a420]"
+            className="h-[30px] rounded bg-[#42b72a] px-2.5 text-[12px] font-semibold text-white hover:bg-[#36a420]"
             onClick={() => setCreateOpen(true)}
           >
-            <Plus className="mr-1 h-3 w-3" strokeWidth={3} /> Create
+            <Plus className="mr-0.5 h-3 w-3" strokeWidth={3} /> Create
           </Button>
 
           {ui.selected.length > 0 ? (
             <>
-              <ToolbarBtn label="Duplicate" onClick={() => bulk("duplicate")} disabled={ui.selected.length === 0} />
-              <ToolbarBtn label="Edit" disabled={ui.selected.length === 0} />
-              <ToolbarBtn label="A/B test" disabled={ui.selected.length === 0} />
+              <ToolbarBtn label="Duplicate" onClick={() => bulk("duplicate")} />
+              <ToolbarBtn label="Edit" disabled />
+              <ToolbarBtn label="A/B test" disabled />
               <div className="relative">
-                <ToolbarBtn label="More" suffix={<ChevronDown className="h-3 w-3" />} onClick={() => setShowMoreMenu(!showMoreMenu)} />
+                <ToolbarBtn label="More" suffix={<ChevronDown className="h-2.5 w-2.5" />} onClick={() => setShowMoreMenu(!showMoreMenu)} />
                 {showMoreMenu && (
-                  <div className="absolute left-0 top-full z-50 mt-1 w-48 rounded-lg border border-[#dadde1] bg-white py-1 shadow-lg">
+                  <div className="absolute left-0 top-full z-50 mt-0.5 w-44 rounded border border-[#dadde1] bg-white py-0.5 shadow-sm">
                     <DropdownItem label="Activate" onClick={() => { bulk("activate"); setShowMoreMenu(false); }} />
                     <DropdownItem label="Pause" onClick={() => { bulk("pause"); setShowMoreMenu(false); }} />
                     <DropdownItem label="Delete" danger onClick={() => { bulk("delete"); setShowMoreMenu(false); }} />
@@ -245,10 +243,13 @@ function CampaignsInner() {
             </>
           ) : (
             <>
+              <ToolbarBtn label="Duplicate" disabled />
+              <ToolbarBtn label="Edit" disabled />
+              <ToolbarBtn label="A/B test" disabled />
               <div className="relative">
-                <ToolbarBtn label="More" suffix={<ChevronDown className="h-3 w-3" />} onClick={() => setShowMoreMenu(!showMoreMenu)} />
+                <ToolbarBtn label="More" suffix={<ChevronDown className="h-2.5 w-2.5" />} onClick={() => setShowMoreMenu(!showMoreMenu)} />
                 {showMoreMenu && (
-                  <div className="absolute left-0 top-full z-50 mt-1 w-48 rounded-lg border border-[#dadde1] bg-white py-1 shadow-lg">
+                  <div className="absolute left-0 top-full z-50 mt-0.5 w-44 rounded border border-[#dadde1] bg-white py-0.5 shadow-sm">
                     <DropdownItem label="Select all" onClick={() => { ui.selectMany(filtered.map((c) => c.id)); setShowMoreMenu(false); }} />
                   </div>
                 )}
@@ -259,55 +260,45 @@ function CampaignsInner() {
 
         <div className="flex items-center gap-1">
           <div className="relative">
-            <ToolbarBtn
-              label="Columns: Performance"
-              suffix={<ChevronDown className="h-3 w-3" />}
-              onClick={() => { setShowColumnsMenu(!showColumnsMenu); setShowBreakdownMenu(false); }}
-            />
+            <ToolbarBtn label="Columns: Performance" suffix={<ChevronDown className="h-2.5 w-2.5" />} onClick={() => { setShowColumnsMenu(!showColumnsMenu); setShowBreakdownMenu(false); }} />
             {showColumnsMenu && (
-              <div className="absolute right-0 top-full z-50 mt-1 w-48 rounded-lg border border-[#dadde1] bg-white py-1 shadow-lg">
+              <div className="absolute right-0 top-full z-50 mt-0.5 w-44 rounded border border-[#dadde1] bg-white py-0.5 shadow-sm">
                 <DropdownItem label="Performance" active onClick={() => setShowColumnsMenu(false)} />
                 <DropdownItem label="Setup" onClick={() => setShowColumnsMenu(false)} />
                 <DropdownItem label="Delivery" onClick={() => setShowColumnsMenu(false)} />
-                <DropdownItem label="Video metrics" onClick={() => setShowColumnsMenu(false)} />
               </div>
             )}
           </div>
           <div className="relative">
-            <ToolbarBtn
-              label="Breakdown"
-              suffix={<ChevronDown className="h-3 w-3" />}
-              onClick={() => { setShowBreakdownMenu(!showBreakdownMenu); setShowColumnsMenu(false); }}
-            />
+            <ToolbarBtn label="Breakdown" suffix={<ChevronDown className="h-2.5 w-2.5" />} onClick={() => { setShowBreakdownMenu(!showBreakdownMenu); setShowColumnsMenu(false); }} />
             {showBreakdownMenu && (
-              <div className="absolute right-0 top-full z-50 mt-1 w-48 rounded-lg border border-[#dadde1] bg-white py-1 shadow-lg">
+              <div className="absolute right-0 top-full z-50 mt-0.5 w-44 rounded border border-[#dadde1] bg-white py-0.5 shadow-sm">
                 <DropdownItem label="None" active onClick={() => setShowBreakdownMenu(false)} />
                 <DropdownItem label="By time" onClick={() => setShowBreakdownMenu(false)} />
                 <DropdownItem label="By delivery" onClick={() => setShowBreakdownMenu(false)} />
-                <DropdownItem label="By action" onClick={() => setShowBreakdownMenu(false)} />
               </div>
             )}
           </div>
-          <div className="mx-1 h-4 w-px bg-[#dadde1]" />
-          <button className="flex h-7 w-7 items-center justify-center rounded-lg text-[#65676b] transition-colors hover:bg-[#f0f2f5]" title="Open data sources">
-            <BarChart3 className="h-4 w-4" />
+          <div className="mx-0.5 h-3.5 w-px bg-[#dadde1]" />
+          <button className="flex h-[30px] w-[30px] items-center justify-center rounded text-[#65676b] transition-colors hover:bg-[#f0f2f5]" title="Reports">
+            <BarChart3 className="h-3.5 w-3.5" />
           </button>
-          <button className="flex h-7 w-7 items-center justify-center rounded-lg text-[#65676b] transition-colors hover:bg-[#f0f2f5]" title="Reports">
-            <Settings2 className="h-4 w-4" />
+          <button className="flex h-[30px] w-[30px] items-center justify-center rounded text-[#65676b] transition-colors hover:bg-[#f0f2f5]" title="Settings">
+            <Settings2 className="h-3.5 w-3.5" />
           </button>
-          <div className="mx-1 h-4 w-px bg-[#dadde1]" />
-          <Button variant="outline" size="sm" className="rounded-lg border-[#dadde1] bg-white text-[11px] font-medium text-[#1c1e21] hover:bg-[#f0f2f5]" onClick={exportSelected}>
-            <FileDown className="mr-1 h-3 w-3" /> Export
-          </Button>
+          <div className="mx-0.5 h-3.5 w-px bg-[#dadde1]" />
+          <button className="flex h-[30px] items-center gap-1 rounded border border-[#dadde1] bg-white px-2 text-[12px] font-medium text-[#1c1e21] transition-colors hover:bg-[#f0f2f5]" onClick={exportSelected}>
+            <FileDown className="h-3.5 w-3.5" /> Export
+          </button>
         </div>
       </div>
 
       {/* Bulk Actions bar */}
       {ui.selected.length > 0 && (
-        <div className="flex items-center gap-2 border-b border-[#dadde1] bg-[#e7f3ff] px-6 py-1.5">
+        <div className="flex items-center gap-2 border-b border-[#dadde1] bg-[#e7f3ff] px-4 py-1">
           <Checkbox checked={allSelected} onCheckedChange={() => (allSelected ? ui.clearSelect() : ui.selectMany(filtered.map((c) => c.id)))} className="rounded border-[#1877f2]" />
           <span className="text-[12px] font-semibold text-[#1c1e21]">{ui.selected.length} selected</span>
-          <div className="mx-1 h-3 w-px bg-[#c5d7f0]" />
+          <div className="mx-0.5 h-3 w-px bg-[#c5d7f0]" />
           <BulkActionBtn label="Activate" onClick={() => bulk("activate")} />
           <BulkActionBtn label="Pause" onClick={() => bulk("pause")} />
           <BulkActionBtn label="Duplicate" onClick={() => bulk("duplicate")} />
@@ -317,46 +308,69 @@ function CampaignsInner() {
         </div>
       )}
 
-      {/* Table with horizontal scroll */}
+      {/* Table + horizontal scroll wrapper */}
       <div ref={scrollRef} className="flex-1 overflow-auto">
         {isLoading ? (
-          <div className="space-y-3 p-6">{[1, 2, 3, 4].map((i) => (<div key={i} className="h-[44px] animate-pulse rounded bg-[#f0f2f5]" />))}</div>
+          <div className="space-y-0 p-4">{[1, 2, 3, 4].map((i) => (<div key={i} className="h-[40px] animate-pulse border-b border-[#dadde1] bg-[#f0f2f5]" />))}</div>
         ) : filtered.length === 0 ? (
-          <EmptyState hasFilters={!!hasFilters} onCreate={() => setCreateOpen(true)} />
+          <EmptyState hasFilters={!!search || statusFilter !== "all"} onCreate={() => setCreateOpen(true)} />
         ) : (
-          <table className="w-full border-collapse" style={{ minWidth: 1494 }}>
-            <thead className="sticky top-0 z-20">
-              <tr className="border-b border-[#dadde1] bg-[#f7f8fa]">
-                <th className="sticky left-0 z-30 border-r border-[#dadde1] bg-[#f7f8fa] px-3 py-2.5" style={{ width: 44, minWidth: 44 }}>
-                  <Checkbox checked={allSelected} onCheckedChange={() => (allSelected ? ui.clearSelect() : ui.selectMany(filtered.map((c) => c.id)))} className="border-[#bcc0c4] rounded-[3px]" />
-                </th>
-                <th className="sticky left-[44px] z-30 border-r border-[#dadde1] bg-[#f7f8fa] px-3 py-2.5" style={{ width: 80, minWidth: 80 }} />
-                <th className="sticky left-[124px] z-30 border-r border-[#dadde1] bg-[#f7f8fa] px-3 py-2.5 text-left text-[11px] font-semibold text-[#65676b]" style={{ width: 300, minWidth: 300 }}>Campaign</th>
-                <th className="border-r border-[#dadde1] bg-[#f7f8fa] px-3 py-2.5 text-left text-[11px] font-semibold text-[#65676b]" style={{ width: 140, minWidth: 140 }}>Delivery</th>
-                <th className="border-r border-[#dadde1] bg-[#f7f8fa] px-3 py-2.5 text-left text-[11px] font-semibold text-[#65676b]" style={{ width: 170, minWidth: 170 }}>Actions</th>
-                <th className="border-r border-[#dadde1] bg-[#f7f8fa] px-3 py-2.5 text-left text-[11px] font-semibold text-[#65676b]" style={{ width: 130, minWidth: 130 }}>Results</th>
-                <th className="border-r border-[#dadde1] bg-[#f7f8fa] px-3 py-2.5 text-left text-[11px] font-semibold text-[#65676b]" style={{ width: 130, minWidth: 130 }}>Cost per result</th>
-                <th className="border-r border-[#dadde1] bg-[#f7f8fa] px-3 py-2.5 text-left text-[11px] font-semibold text-[#65676b]" style={{ width: 120, minWidth: 120 }}>Budget</th>
-                <th className="border-r border-[#dadde1] bg-[#f7f8fa] px-3 py-2.5 text-right text-[11px] font-semibold text-[#65676b]" style={{ width: 130, minWidth: 130 }}>Amount spent</th>
-                <th className="border-r border-[#dadde1] bg-[#f7f8fa] px-3 py-2.5 text-right text-[11px] font-semibold text-[#65676b]" style={{ width: 130, minWidth: 130 }}>Impressions</th>
-                <th className="border-r border-[#dadde1] bg-[#f7f8fa] px-3 py-2.5 text-right text-[11px] font-semibold text-[#65676b]" style={{ width: 120, minWidth: 120 }}>Reach</th>
-                <th className="bg-[#f7f8fa] px-3 py-2.5 text-left text-[11px] font-semibold text-[#65676b]" style={{ width: 100, minWidth: 100 }}>Ends</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((c, i) => (
-                <CampaignCard key={c.id} campaign={c} index={i} />
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+          <>
+            <table className="w-full border-collapse" style={{ minWidth: 1400 }}>
+              <thead className="sticky top-0 z-20">
+                <tr className="border-b border-[#dadde1] bg-[#f5f6f8]">
+                  <th className="sticky left-0 z-30 border-r border-[#dadde1] bg-[#f5f6f8] px-2 py-1.5" style={{ width: 40, minWidth: 40 }}>
+                    <Checkbox checked={allSelected} onCheckedChange={() => (allSelected ? ui.clearSelect() : ui.selectMany(filtered.map((c) => c.id)))} className="border-[#bcc0c4] rounded-[3px]" />
+                  </th>
+                  <th className="sticky left-[40px] z-30 border-r border-[#dadde1] bg-[#f5f6f8] px-2 py-1.5 text-center text-[11px] font-semibold text-[#65676b]" style={{ width: 64, minWidth: 64 }}>
+                    Off / On
+                  </th>
+                  <th className="sticky left-[104px] z-30 border-r border-[#dadde1] bg-[#f5f6f8] px-2 py-1.5 text-left text-[11px] font-semibold text-[#65676b]" style={{ width: 280, minWidth: 280 }}>
+                    <span className="inline-flex items-center gap-1">Campaign <ArrowUpDown className="h-2.5 w-2.5 text-[#bcc0c4]" /></span>
+                  </th>
+                  <th className="border-r border-[#dadde1] bg-[#f5f6f8] px-2 py-1.5 text-left text-[11px] font-semibold" style={{ width: 130, minWidth: 130 }}>
+                    <span className="inline-flex items-center gap-1 text-[#1877f2]">Delivery <ChevronDown className="h-2.5 w-2.5" /></span>
+                  </th>
+                  <th className="border-r border-[#dadde1] bg-[#f5f6f8] px-2 py-1.5 text-left text-[11px] font-semibold text-[#65676b]" style={{ width: 120, minWidth: 120 }}>
+                    <span className="inline-flex items-center gap-1">Actions</span>
+                  </th>
+                  <th className="border-r border-[#dadde1] bg-[#f5f6f8] px-2 py-1.5 text-left text-[11px] font-semibold text-[#65676b]" style={{ width: 120, minWidth: 120 }}>
+                    <span className="inline-flex items-center gap-1">Results <ArrowUpDown className="h-2.5 w-2.5 text-[#bcc0c4]" /></span>
+                  </th>
+                  <th className="border-r border-[#dadde1] bg-[#f5f6f8] px-2 py-1.5 text-left text-[11px] font-semibold text-[#65676b]" style={{ width: 120, minWidth: 120 }}>
+                    <span className="inline-flex items-center gap-1">Cost per result <ArrowUpDown className="h-2.5 w-2.5 text-[#bcc0c4]" /></span>
+                  </th>
+                  <th className="border-r border-[#dadde1] bg-[#f5f6f8] px-2 py-1.5 text-left text-[11px] font-semibold text-[#65676b]" style={{ width: 110, minWidth: 110 }}>
+                    <span className="inline-flex items-center gap-1">Budget</span>
+                  </th>
+                  <th className="border-r border-[#dadde1] bg-[#f5f6f8] px-2 py-1.5 text-right text-[11px] font-semibold text-[#65676b]" style={{ width: 110, minWidth: 110 }}>
+                    <span className="inline-flex items-center gap-1">Amount spent <ArrowUpDown className="h-2.5 w-2.5 text-[#bcc0c4]" /></span>
+                  </th>
+                  <th className="border-r border-[#dadde1] bg-[#f5f6f8] px-2 py-1.5 text-right text-[11px] font-semibold text-[#65676b]" style={{ width: 110, minWidth: 110 }}>
+                    <span className="inline-flex items-center gap-1">Impressions <ArrowUpDown className="h-2.5 w-2.5 text-[#bcc0c4]" /></span>
+                  </th>
+                  <th className="border-r border-[#dadde1] bg-[#f5f6f8] px-2 py-1.5 text-right text-[11px] font-semibold text-[#65676b]" style={{ width: 100, minWidth: 100 }}>
+                    <span className="inline-flex items-center gap-1">Reach <ArrowUpDown className="h-2.5 w-2.5 text-[#bcc0c4]" /></span>
+                  </th>
+                  <th className="bg-[#f5f6f8] px-2 py-1.5 text-left text-[11px] font-semibold text-[#65676b]" style={{ width: 90, minWidth: 90 }}>
+                    <span className="inline-flex items-center gap-1">Ends</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((c, i) => (
+                  <CampaignCard key={c.id} campaign={c} index={i} />
+                ))}
+              </tbody>
+            </table>
 
-      {/* Summary row */}
-      <div className="flex items-center gap-2 border-t border-[#dadde1] bg-white px-6 py-2 text-[12px] text-[#65676b]">
-        <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#e4e6eb] text-[10px] font-bold italic text-[#65676b]">i</span>
-        Results from {filtered.length} campaign{filtered.length !== 1 ? "s" : ""}
-        <span className="ml-2 text-[#65676b]">· {formatCurrency(totalSpend)} total spend</span>
+            {/* Summary row directly below table */}
+            <div className="flex items-center gap-1.5 border-b border-[#dadde1] bg-white px-4 py-1.5 text-[12px] text-[#65676b]">
+              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#e4e6eb] text-[10px] font-bold text-[#65676b]">i</span>
+              Results from {filtered.length} campaign{filtered.length !== 1 ? "s" : ""}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Drawer & Dialogs */}
@@ -374,8 +388,8 @@ function ToolbarBtn({ label, suffix, onClick, disabled }: { label: string; suffi
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`flex items-center gap-1 rounded-lg border border-[#dadde1] bg-white px-2.5 py-1.5 text-[11px] font-medium transition-colors ${
-        disabled ? "cursor-not-allowed opacity-50" : "text-[#1c1e21] hover:bg-[#f0f2f5]"
+      className={`flex h-[30px] items-center gap-1 rounded border border-[#dadde1] bg-white px-2 text-[12px] font-medium transition-colors ${
+        disabled ? "cursor-not-allowed opacity-40" : "text-[#1c1e21] hover:bg-[#f0f2f5]"
       }`}
     >
       {label}{suffix}
@@ -387,7 +401,7 @@ function DropdownItem({ label, active, danger, onClick }: { label: string; activ
   return (
     <button
       onClick={onClick}
-      className={`w-full px-3 py-1.5 text-left text-[12px] transition-colors ${
+      className={`w-full px-2.5 py-1 text-left text-[12px] transition-colors ${
         active ? "bg-[#e7f3ff] text-[#1877f2]" : danger ? "text-[#d32f2f] hover:bg-red-50" : "text-[#1c1e21] hover:bg-[#f0f2f5]"
       }`}
     >
@@ -400,7 +414,7 @@ function BulkActionBtn({ label, onClick, danger }: { label: string; onClick: () 
   return (
     <button
       onClick={onClick}
-      className={`rounded px-2 py-0.5 text-[11px] font-medium transition-colors ${
+      className={`rounded px-1.5 py-0.5 text-[11px] font-medium transition-colors ${
         danger ? "text-[#d32f2f] hover:bg-red-50" : "text-[#1c1e21] hover:bg-[#f0f2f5]"
       }`}
     >
@@ -411,17 +425,17 @@ function BulkActionBtn({ label, onClick, danger }: { label: string; onClick: () 
 
 function EmptyState({ hasFilters, onCreate }: { hasFilters: boolean; onCreate: () => void }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-24 text-center">
-      <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#e7f3ff] text-[#1877f2]">
-        {hasFilters ? <PlaySquare className="h-7 w-7" /> : <Megaphone className="h-7 w-7" />}
+    <div className="flex flex-col items-center justify-center gap-3 py-20 text-center">
+      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#e7f3ff] text-[#1877f2]">
+        {hasFilters ? <PlaySquare className="h-5 w-5" /> : <Megaphone className="h-5 w-5" />}
       </span>
       <div>
-        <h3 className="text-[16px] font-semibold text-[#1c1e21]">{hasFilters ? "No campaigns match your filters" : "No campaigns yet"}</h3>
-        <p className="mt-1 text-[13px] text-[#65676b]">{hasFilters ? "Try adjusting your search or filters." : "Create your first campaign to start managing spend and results."}</p>
+        <h3 className="text-[14px] font-semibold text-[#1c1e21]">{hasFilters ? "No campaigns match your filters" : "No campaigns yet"}</h3>
+        <p className="mt-0.5 text-[12px] text-[#65676b]">{hasFilters ? "Try adjusting your search or filters." : "Create your first campaign to start managing spend and results."}</p>
       </div>
       {!hasFilters && (
-        <Button className="rounded-lg bg-[#42b72a] px-5 font-semibold text-white hover:bg-[#36a420]" onClick={onCreate}>
-          <Plus className="mr-1.5 h-4 w-4" strokeWidth={3} /> Create campaign
+        <Button className="rounded bg-[#42b72a] px-4 py-1.5 text-[12px] font-semibold text-white hover:bg-[#36a420]" onClick={onCreate}>
+          <Plus className="mr-1 h-3 w-3" strokeWidth={3} /> Create campaign
         </Button>
       )}
     </div>

@@ -11,7 +11,7 @@ export function Layout({ children }: LayoutProps) {
     <div className="flex h-screen w-full overflow-hidden bg-[#f0f2f5]">
       <TopHeader />
       <NavSidebar />
-      <main className="ml-[64px] mt-[56px] flex-1 overflow-y-auto">
+      <main className="ml-[56px] mt-[48px] flex-1 overflow-y-auto">
         {children}
       </main>
     </div>
